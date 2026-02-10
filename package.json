@@ -1,0 +1,23 @@
+{
+  "name": "openclaw-autonomous-platform",
+  "version": "1.0.0",
+  "description": "OpenCLAW Autonomous Multi-Agent Scientific Research Platform — 24/7 Cloud-Native AGI Research",
+  "main": "src/index.ts",
+  "scripts": {
+    "research": "ts-node src/agents/research-agent.ts",
+    "social": "ts-node src/agents/social-agent.ts",
+    "strategy": "ts-node src/agents/strategy-agent.ts",
+    "all": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.2",
+    "@types/nodemailer": "^6.4.11",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}

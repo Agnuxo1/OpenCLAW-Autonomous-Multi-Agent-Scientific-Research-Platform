@@ -1,0 +1,20 @@
+name: Social Cycle (Every 6h)
+on:
+  schedule:
+    - cron: "30 */6 * * *" # Every 6 hours (offset by 30 min)
+  workflow_dispatch:
+
+jobs:
+  social:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install
+      - run: npx ts-node src/agents/social-agent.ts
+        env:
+          MOLTBOOK_API_KEY: ${{ secrets.MOLTBOOK_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIST_STATE_ID: ${{ secrets.GIST_STATE_ID }}
