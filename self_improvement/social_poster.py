@@ -74,11 +74,43 @@ class SocialPoster:
         except Exception as e:
             print(f"Reddit post failed: {e}")
 
+    def post_to_moltbook(self, content: str):
+        if not self.moltbook_key:
+            print("Skipping Moltbook: Missing API Key")
+            return
+
+        url = "https://www.moltbook.com/api/v1/posts"
+        headers = {
+            "Authorization": f"Bearer {self.moltbook_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Rotational topics based on user's pillars
+        title = "OpenCLAW AGI Research Update"
+        payload = {
+            "title": title,
+            "content": content + "\n\n#OpenCLAW #AGI #Neuromorphic",
+            "submolt": "agi" 
+        }
+
+        try:
+            import requests
+            response = requests.post(url, json=payload, headers=headers, timeout=10)
+            if 200 <= response.status_code < 300:
+                print(f"Moltbook post successful: {response.status_code}")
+            else:
+                print(f"Moltbook post failed: {response.status_code} - {response.text}")
+        except Exception as e:
+            print(f"Moltbook post error: {e}")
+
     def run_daily_cycle(self):
         print("Running daily social cycle...")
         content = self.generate_content("Neuromorphic Computing")
         print(f"Generated Content: {content}")
+        
+        # Post to platforms
         self.post_to_reddit(content)
+        self.post_to_moltbook(content)
 
 if __name__ == "__main__":
     poster = SocialPoster()
