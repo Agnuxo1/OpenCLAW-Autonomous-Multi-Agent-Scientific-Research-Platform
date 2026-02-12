@@ -1,0 +1,7 @@
+flask
+requests
+psutil
+python-dotenv
+google-generativeai
+praw
+openai

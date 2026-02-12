@@ -12,9 +12,13 @@
   "dependencies": {
     "axios": "^1.6.0",
     "dotenv": "^16.3.1",
-    "nodemailer": "^6.9.7"
+    "libsodium-wrappers": "^0.8.2",
+    "nodemailer": "^6.9.7",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.8.2",
     "@types/nodemailer": "^6.4.11",
     "ts-node": "^10.9.1",

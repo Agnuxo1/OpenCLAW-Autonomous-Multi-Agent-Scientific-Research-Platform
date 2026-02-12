@@ -30,39 +30,60 @@ const DEFAULT_STATE: AgentState = {
   collaboratorCandidates: [],
 };
 
+import * as fs from 'fs-extra';
+import * as path from 'path';
+
+const LOCAL_STATE_FILE = path.join(__dirname, '../../state/agent_state.json');
+
 export async function loadState(): Promise<AgentState> {
-  if (!GIST_STATE_ID || !GITHUB_TOKEN) {
-    console.log('[STATE] No Gist ID or token configured. Using default state.');
-    return { ...DEFAULT_STATE };
+  // 1. Try Gist
+  if (GIST_STATE_ID && GITHUB_TOKEN) {
+    try {
+      const res = await axios.get(`https://api.github.com/gists/${GIST_STATE_ID}`, {
+        headers: { Authorization: `Bearer ${GITHUB_TOKEN}`, Accept: 'application/vnd.github+json' },
+      });
+      const content = res.data.files?.['agent_state.json']?.content;
+      if (content) return JSON.parse(content) as AgentState;
+    } catch (err) {
+      console.error('[STATE] Failed to load state from Gist.', err);
+    }
   }
+
+  // 2. Try Local File
   try {
-    const res = await axios.get(`https://api.github.com/gists/${GIST_STATE_ID}`, {
-      headers: { Authorization: `Bearer ${GITHUB_TOKEN}`, Accept: 'application/vnd.github+json' },
-    });
-    const content = res.data.files?.['agent_state.json']?.content;
-    if (content) {
-      return JSON.parse(content) as AgentState;
+    if (await fs.pathExists(LOCAL_STATE_FILE)) {
+      return await fs.readJson(LOCAL_STATE_FILE) as AgentState;
     }
   } catch (err) {
-    console.error('[STATE] Failed to load state from Gist, using default.', err);
+    console.error('[STATE] Failed to load local state.', err);
   }
+
   return { ...DEFAULT_STATE };
 }
 
 export async function saveState(state: AgentState): Promise<void> {
-  if (!GIST_STATE_ID || !GITHUB_TOKEN) {
-    console.log('[STATE] No Gist ID configured. State not persisted.');
-    return;
-  }
   state.lastRun = new Date().toISOString();
+  
+  // 1. Save to Gist (if configured)
+  if (GIST_STATE_ID && GITHUB_TOKEN) {
+    try {
+      await axios.patch(
+        `https://api.github.com/gists/${GIST_STATE_ID}`,
+        { files: { 'agent_state.json': { content: JSON.stringify(state, null, 2) } } },
+        { headers: { Authorization: `Bearer ${GITHUB_TOKEN}`, Accept: 'application/vnd.github+json' } }
+      );
+      console.log('[STATE] State saved to Gist.');
+    } catch (err) {
+      console.error('[STATE] Failed to save to Gist.', err);
+    }
+  }
+
+  // 2. Always save to Local File (backup/hybrid mode)
   try {
-    await axios.patch(
-      `https://api.github.com/gists/${GIST_STATE_ID}`,
-      { files: { 'agent_state.json': { content: JSON.stringify(state, null, 2) } } },
-      { headers: { Authorization: `Bearer ${GITHUB_TOKEN}`, Accept: 'application/vnd.github+json' } }
-    );
-    console.log('[STATE] State saved to Gist successfully.');
+    await fs.ensureDir(path.dirname(LOCAL_STATE_FILE));
+    await fs.writeJson(LOCAL_STATE_FILE, state, { spaces: 2 });
+    console.log('[STATE] State saved locally.');
   } catch (err) {
-    console.error('[STATE] Failed to save state.', err);
+    console.error('[STATE] Failed to save locally.', err);
   }
 }

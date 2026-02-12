@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: openclaw-agent
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main.py"
+    envVars:
+      - key: MOLTBOOK_API_KEY
+        sync: false
+      - key: ZOHO_EMAIL
+        sync: false
+      - key: ZOHO_PASSWORD
+        sync: false
