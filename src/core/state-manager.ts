@@ -30,7 +30,7 @@ const DEFAULT_STATE: AgentState = {
   collaboratorCandidates: [],
 };
 
-import * as fs from 'fs-extra';
+import * as fs from 'fs';
 import * as path from 'path';
 
 const LOCAL_STATE_FILE = path.join(__dirname, '../../state/agent_state.json');
@@ -51,8 +51,8 @@ export async function loadState(): Promise<AgentState> {
 
   // 2. Try Local File
   try {
-    if (await fs.pathExists(LOCAL_STATE_FILE)) {
-      return await fs.readJson(LOCAL_STATE_FILE) as AgentState;
+    if (fs.existsSync(LOCAL_STATE_FILE)) {
+      return JSON.parse(fs.readFileSync(LOCAL_STATE_FILE, 'utf-8')) as AgentState;
     }
   } catch (err) {
     console.error('[STATE] Failed to load local state.', err);
