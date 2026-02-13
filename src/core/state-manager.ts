@@ -80,8 +80,8 @@ export async function saveState(state: AgentState): Promise<void> {
 
   // 2. Always save to Local File (backup/hybrid mode)
   try {
-    await fs.ensureDir(path.dirname(LOCAL_STATE_FILE));
-    await fs.writeJson(LOCAL_STATE_FILE, state, { spaces: 2 });
+    fs.mkdirSync(path.dirname(LOCAL_STATE_FILE), { recursive: true });
+    fs.writeFileSync(LOCAL_STATE_FILE, JSON.stringify(state, null, 2));
     console.log('[STATE] State saved locally.');
   } catch (err) {
     console.error('[STATE] Failed to save locally.', err);
