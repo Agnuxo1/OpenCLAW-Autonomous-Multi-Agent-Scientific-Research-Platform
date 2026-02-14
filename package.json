@@ -15,12 +15,14 @@
     "libsodium-wrappers": "^0.8.2",
     "nodemailer": "^6.9.7",
     "tweetnacl": "^1.0.3",
-    "tweetnacl-util": "^0.15.1"
+    "tweetnacl-util": "^0.15.1",
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.8.2",
+    "@types/node": "^20.0.0",
     "@types/nodemailer": "^6.4.11",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "@types/fs-extra": "^11.0.0"
   }
 }

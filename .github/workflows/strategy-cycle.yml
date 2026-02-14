@@ -1,30 +1,28 @@
 name: Strategy Cycle (Every 12h)
 on:
   schedule:
-    - cron: "0 */12 * * *" # Every 12 hours
+    - cron: "0 */12 * * *"
   workflow_dispatch:
 
 jobs:
   strategy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm install
-      - run: npx ts-node src/agents/strategy-agent.ts
+      - name: Clean install
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+      - name: Run Strategy Agent
+        run: npx ts-node src/agents/strategy-agent.ts
         env:
-          MOLTBOOK_API_KEY: ${{ secrets.MOLTBOOK_API_KEY }}
-          MOLTHUB_API_KEY: ${{ secrets.MOLTHUB_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIST_STATE_ID: ${{ secrets.GIST_STATE_ID }}
-          GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }}
-          OPENROUTER_API_KEYS: ${{ secrets.OPENROUTER_API_KEYS }}
-          NVIDIA_API_KEYS: ${{ secrets.NVIDIA_API_KEYS }}
-          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ZOHO_EMAIL: ${{ secrets.ZOHO_EMAIL }}
           ZOHO_PASSWORD: ${{ secrets.ZOHO_PASSWORD }}
+          GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }}
+          NVIDIA_API_KEYS: ${{ secrets.NVIDIA_API_KEYS }}
