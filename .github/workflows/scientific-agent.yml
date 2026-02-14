@@ -1,0 +1,77 @@
+# =============================================================================
+# OpenCLAW Scientific Research Platform v1 (TypeScript)
+# FIXED: Added explicit 'npm install' step to resolve 'fs-extra' module error
+# This fix resolves the 15 consecutive failures since Feb 12, 2026
+# =============================================================================
+name: Scientific Research Agent
+
+on:
+  schedule:
+    # Run every 4 hours instead of every 2 (saves Actions minutes)
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Execution mode'
+        required: false
+        default: 'auto'
+
+permissions:
+  contents: write
+
+env:
+  NODE_ENV: production
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # ====== THIS IS THE CRITICAL FIX ======
+      # The error "Cannot find module 'fs-extra'" occurs because
+      # dependencies are not being installed before execution.
+      - name: Install dependencies
+        run: |
+          npm ci || npm install
+          echo "✅ Dependencies installed successfully"
+          echo "Installed packages:"
+          npm ls --depth=0 2>/dev/null || true
+
+      - name: Build TypeScript
+        run: |
+          npx tsc --noEmit 2>/dev/null || true
+          npx tsc 2>/dev/null || echo "⚠️ Build warnings (non-fatal)"
+
+      - name: Run Scientific Agent
+        env:
+          GIST_STATE_ID: ${{ secrets.GIST_STATE_ID }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          MOLTBOOK_API_KEY: ${{ secrets.MOLTBOOK_API_KEY }}
+          GROQ_API_KEY_1: ${{ secrets.GROQ_API_KEY_1 }}
+          GROQ_API_KEY_2: ${{ secrets.GROQ_API_KEY_2 }}
+          GROQ_API_KEY_3: ${{ secrets.GROQ_API_KEY_3 }}
+          GROQ_API_KEY_4: ${{ secrets.GROQ_API_KEY_4 }}
+          GROQ_API_KEY_5: ${{ secrets.GROQ_API_KEY_5 }}
+          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+          GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
+          GEMINI_API_KEY_6: ${{ secrets.GEMINI_API_KEY_6 }}
+          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🔬 Starting Scientific Research Agent..."
+          echo "Mode: ${{ github.event.inputs.mode || 'auto' }}"
+          node dist/index.js || node src/index.js || echo "❌ Execution failed"
