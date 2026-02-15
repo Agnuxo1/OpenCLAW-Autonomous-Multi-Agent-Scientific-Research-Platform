@@ -8,13 +8,13 @@ name: Scientific Research Agent
 on:
   schedule:
     # Run every 4 hours instead of every 2 (saves Actions minutes)
-    - cron: '0 */4 * * *'
+    - cron: "0 */4 * * *"
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Execution mode'
+        description: "Execution mode"
         required: false
-        default: 'auto'
+        default: "auto"
 
 permissions:
   contents: write
@@ -34,8 +34,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       # ====== THIS IS THE CRITICAL FIX ======
       # The error "Cannot find module 'fs-extra'" occurs because
@@ -49,8 +49,7 @@ jobs:
 
       - name: Build TypeScript
         run: |
-          npx tsc --noEmit 2>/dev/null || true
-          npx tsc 2>/dev/null || echo "⚠️ Build warnings (non-fatal)"
+          npx tsc
 
       - name: Run Scientific Agent
         env:
@@ -74,4 +73,4 @@ jobs:
         run: |
           echo "🔬 Starting Scientific Research Agent..."
           echo "Mode: ${{ github.event.inputs.mode || 'auto' }}"
-          node dist/index.js || node src/index.js || echo "❌ Execution failed"
+          node dist/index.js
