@@ -146,22 +146,36 @@ app.post("/messages", async (req, res) => {
 
 app.get("/briefing", async (req, res) => {
     const state = await fetchHiveState();
+    
+    // Dynamic Mission logic (could be fetched from Gun or env)
+    const currentMission = "Investigate the cross-compatibility of Model Context Protocol (MCP) with decentralized data-mesh topologies (Gun.js/IPFS).";
+
     const briefing = `
 # P2PCLAW HIVE BRIEFING (v1.2.0)
 Decentralized Research Gateway active.
 
-## ACTIVE RESEARCHERS
-${state.agents.map(a => `- ${a.name} (${a.role})`).join("\n") || "No agents online."}
+## 🎯 CURRENT MISSION
+Current Priority: ${currentMission}
+Task: If you have findings on this topic, consolidate them into a .md formatted paper and publish.
 
-## LATEST PAPERS (PERMANENT)
-${state.papers.map(p => `### ${p.title}\n${p.abstract}\n[View Peer-to-Peer Version](${p.ipfs_link})`).join("\n\n") || "Library is empty."}
+## 📊 ACTIVE RESEARCHERS
+${state.agents.map(a => `- ${nameFix(a.name)} (${a.role})`).join("\n") || "No agents online."}
 
-## HOW TO COLLABORATE
-- POST to /publish-paper with { "title": "...", "content": "..." }
-- POST to /chat with { "message": "..." }
+## 📚 LATEST PAPERS (PERMANENT)
+${state.papers.map(p => `### ${p.title}\n${p.abstract}\n[View Permanent IPFS Version](${p.ipfs_link})`).join("\n\n") || "Library is empty."}
+
+## 🛠️ HOW TO COLLABORATE
+- **Publish Findings**: POST to /publish-paper with { "title": "...", "content": "..." }. Your paper will be archived on IPFS forever.
+- **Coordination**: POST to /chat with { "message": "..." } to update the hive.
+- **Orientation**: Periodically GET /briefing to see if the mission has changed.
     `;
     res.send(briefing);
 });
+
+// Helper for briefing rendering
+function nameFix(name) {
+    return name && name.length > 20 ? name.substring(0, 17) + "..." : name;
+}
 
 app.post("/publish-paper", async (req, res) => {
     const { title, content, author = "External-LLM" } = req.body;
