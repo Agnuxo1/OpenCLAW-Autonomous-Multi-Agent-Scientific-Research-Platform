@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import archiver from 'archiver';
-import WebTorrent from 'webtorrent';
+// import WebTorrent from 'webtorrent'; // Removed static import
 import crypto from 'crypto';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -15,14 +15,17 @@ if (!fs.existsSync(BACKUP_DIR)) {
     fs.mkdirSync(BACKUP_DIR, { recursive: true });
 }
 
-// Initialize WebTorrent Client (Singleton, Lazy)
+// Initialize WebTorrent Client (Singleton, Lazy, Dynamic)
 // This client stays alive as long as the server runs, seeding all generated snapshots.
 let client = null;
-function getClient() {
+async function getClient() {
     if (!client) {
         try {
+            console.log('[Archivist] Dynamically loading WebTorrent...');
+            const { default: WebTorrent } = await import('webtorrent');
             client = new WebTorrent();
             client.on('error', (err) => console.error('[WebTorrent] Client Error:', err));
+            console.log('[Archivist] WebTorrent loaded successfully.');
         } catch (err) {
             console.error('[WebTorrent] Failed to initialize client:', err);
         }
@@ -104,29 +107,33 @@ ${content}`;
 
         // 2. Auto-Seed via WebTorrent (Server becomes the first seeder)
         const torrentData = await new Promise((resolve) => {
-            const client = getClient();
-            if (!client) {
-                console.warn('[Archivist] WebTorrent client unavailable. Skipping seeding.');
-                resolve({}); 
-                return;
-            }
+            getClient().then(client => {
+                if (!client) {
+                    console.warn('[Archivist] WebTorrent client unavailable. Skipping seeding.');
+                    resolve({}); 
+                    return;
+                }
 
-            // Check if already seeding this exact file to avoid duplicates
-            const existing = client.torrents.find(t => t.path === BACKUP_DIR && t.files.some(f => f.name === zipName));
-            if (existing) {
-                console.log(`[Archivist] Already seeding ${zipName}`);
-                resolve(existing);
-                return;
-            }
+                // Check if already seeding this exact file to avoid duplicates
+                const existing = client.torrents.find(t => t.path === BACKUP_DIR && t.files.some(f => f.name === zipName));
+                if (existing) {
+                    console.log(`[Archivist] Already seeding ${zipName}`);
+                    resolve(existing);
+                    return;
+                }
 
-            console.log(`[Archivist] Seeding new snapshot: ${zipName}`);
-            client.seed(zipPath, {
-                name: zipName,
-                comment: 'P2PCLAW Decentralized Scientific Library + Node Source',
-                createdBy: 'P2PCLAW Archivist v2.0 (Auto-Seed)'
-            }, (torrent) => {
-                console.log(`[Archivist] Seeding active! Magnet: ${torrent.magnetURI}`);
-                resolve(torrent);
+                console.log(`[Archivist] Seeding new snapshot: ${zipName}`);
+                client.seed(zipPath, {
+                    name: zipName,
+                    comment: 'P2PCLAW Decentralized Scientific Library + Node Source',
+                    createdBy: 'P2PCLAW Archivist v2.0 (Auto-Seed)'
+                }, (torrent) => {
+                    console.log(`[Archivist] Seeding active! Magnet: ${torrent.magnetURI}`);
+                    resolve(torrent);
+                });
+            }).catch(err => {
+                console.error('[Archivist] WebTorrent init failed:', err);
+                resolve({});
             });
         });
 
