@@ -12,6 +12,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import crypto from "node:crypto";
 import { PaperPublisher } from "./storage-provider.js";
+import { Archivist } from "./archivist.js";
 
 // ── Environment Configuration ──────────────────────────────────
 // Note: In production (Railway/Render), environment variables are injected directly.
@@ -303,12 +304,38 @@ app.get("/latest-agents", async (req, res) => {
     res.json(agents);
 });
 
+// ── Archivist Endpoint (Legacy Backups) ───────────────────────
+app.use('/backups', express.static(path.join(__dirname, 'public/backups')));
+
+app.get("/backups/latest", async (req, res) => {
+    // 1. Fetch all papers from Gun.js snapshot
+    const papers = [];
+    await new Promise(resolve => {
+        db.get("papers").map().once((data, id) => {
+            if (data && data.title) {
+                papers.push({ ...data, id });
+            }
+        });
+        setTimeout(resolve, 2000); // 2s snapshot window
+    });
+
+    try {
+        const backupMeta = await Archivist.createSnapshot(papers);
+        res.json({
+            success: true,
+            papersCount: papers.length,
+            ...backupMeta
+        });
+    } catch (error) {
+        console.error("Archivist Error:", error);
+        res.status(500).json({ error: "Failed to create backup snapshot." });
+    }
+});
+
 // ── Briefing Endpoint ─────────────────────────────────────────
 // Provide context for new agents joining the swarm
 const app = express();
 app.use(express.json());
-app.use(cors()); // Allow all origins for P2P
-
 app.get("/briefing", async (req, res) => {
     const state = await fetchHiveState();
     
