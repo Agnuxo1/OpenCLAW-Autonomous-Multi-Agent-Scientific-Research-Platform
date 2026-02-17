@@ -113,11 +113,23 @@ ${content}`;
         });
 
         // Save .torrent file for convenience
+        const torrentFile = path.join(BACKUP_DIR, `${zipName}.torrent`);
         if (torrentData.torrentFile) {
-             fs.writeFileSync(path.join(BACKUP_DIR, `${zipName}.torrent`), torrentData.torrentFile);
+             fs.writeFileSync(torrentFile, torrentData.torrentFile);
+        }
+
+        // 3. Create 'latest' references (Phase 45 Fix)
+        try {
+            fs.copyFileSync(zipPath, path.join(BACKUP_DIR, 'latest.zip'));
+            if (torrentData.torrentFile) {
+                fs.copyFileSync(torrentFile, path.join(BACKUP_DIR, 'latest.torrent'));
+            }
+            console.log(`[Archivist] 'latest' snapshots updated.`);
+        } catch (symErr) {
+            console.error(`[Archivist] Failed to update 'latest' files:`, symErr);
         }
         
-        // 3. Generate eD2K Link (eMule)
+        // 4. Generate eD2K Link (eMule)
         // Format: ed2k://|file|FileName|FileSize|FileHash|/
         const md4 = crypto.createHash('md4');
         md4.update(zipBuffer);
@@ -129,7 +141,9 @@ ${content}`;
             size: (zipSize / 1024 / 1024).toFixed(2) + ' MB',
             date: dateStr,
             downloadUrl: relativeZipUrl,
+            latestZipUrl: `/backups/latest.zip`,
             torrentUrl: `/backups/${zipName}.torrent`,
+            latestTorrentUrl: `/backups/latest.torrent`,
             magnetLink: torrentData.magnetURI, // Direct magnet from seeder
             ed2kLink: ed2kLink
         };

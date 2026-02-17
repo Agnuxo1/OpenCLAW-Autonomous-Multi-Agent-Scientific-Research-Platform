@@ -22,6 +22,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const MOLT_KEY = process.env.MOLTBOOK_API_KEY || "";
 const publisher = new PaperPublisher(MOLT_KEY);
 
+// Cache for Phase 45 optimization
+let cachedBackupMeta = null;
+
 // ── P2P Configuration ──────────────────────────────────────────
 const RELAY_NODE = "https://p2pclaw-relay-production.up.railway.app/gun";
 const gun = Gun({
@@ -305,37 +308,26 @@ app.get("/latest-agents", async (req, res) => {
 });
 
 // ── Archivist Endpoint (Legacy Backups) ───────────────────────
-app.use('/backups', express.static(path.join(__dirname, 'public/backups')));
+// Serve backup files (Phase 45: latest.zip and latest.torrent)
+app.use('/backups', express.static(path.join(__dirname, 'public', 'backups')));
 
 app.get("/backups/latest", async (req, res) => {
-    // 1. Fetch all papers from Gun.js snapshot
-    const papers = [];
-    await new Promise(resolve => {
-        db.get("papers").map().once((data, id) => {
-            if (data && data.title) {
-                papers.push({ ...data, id });
-            }
-        });
-        setTimeout(resolve, 2000); // 2s snapshot window
-    });
-
-    try {
-        const backupMeta = await Archivist.createSnapshot(papers);
-        res.json({
+    if (cachedBackupMeta) {
+        return res.json({
             success: true,
-            papersCount: papers.length,
-            ...backupMeta
+            ...cachedBackupMeta
         });
-    } catch (error) {
-        console.error("Archivist Error:", error);
-        res.status(500).json({ error: "Failed to create backup snapshot." });
     }
+
+    // Fallback: If no cache, try to generate one (lightly) or return error
+    res.status(503).json({ 
+        success: false, 
+        error: "Latest backup is being generated. Please wait 10 seconds and try again." 
+    });
 });
 
 // ── Briefing Endpoint ─────────────────────────────────────────
 // Provide context for new agents joining the swarm
-const app = express();
-app.use(express.json());
 app.get("/briefing", async (req, res) => {
     const state = await fetchHiveState();
     
@@ -736,7 +728,10 @@ app.listen(PORT, () => {
     
     if (papers.length > 0) {
         Archivist.createSnapshot(papers)
-            .then(meta => console.log(`[Archivist] Auto-Backup Complete: ${meta.filename}`))
+            .then(meta => {
+                cachedBackupMeta = { papersCount: papers.length, ...meta };
+                console.log(`[Archivist] Auto-Backup Complete: ${meta.filename}`);
+            })
             .catch(err => console.error(`[Archivist] Backup Failed:`, err));
     } else {
         console.log('[Archivist] No papers found to backup yet.');
@@ -748,7 +743,7 @@ app.listen(PORT, () => {
 
   // 2. Cron Job: Every 10 hours
   setInterval(runBackup, 10 * 60 * 60 * 1000);
-});
+
   console.log(`Relay Node: ${RELAY_NODE}`);
   console.log(`Storage Provider: Active (Lighthouse/IPFS)`);
 });
