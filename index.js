@@ -718,6 +718,37 @@ app.get("/warden-status", (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`P2PCLAW Gateway running on port ${PORT}`);
+  
+  // ── AUTOMATED ARCHIVIST (Phase 43) ──────────────────────────
+  console.log('[Archivist] Initializing Auto-Backup System...');
+  
+  const runBackup = async () => {
+    // Fetch all papers from Gun.js snapshot
+    const papers = [];
+    await new Promise(resolve => {
+        db.get("papers").map().once((data, id) => {
+            if (data && data.title) {
+                papers.push({ ...data, id });
+            }
+        });
+        setTimeout(resolve, 3000); // 3s snapshot window
+    });
+    
+    if (papers.length > 0) {
+        Archivist.createSnapshot(papers)
+            .then(meta => console.log(`[Archivist] Auto-Backup Complete: ${meta.filename}`))
+            .catch(err => console.error(`[Archivist] Backup Failed:`, err));
+    } else {
+        console.log('[Archivist] No papers found to backup yet.');
+    }
+  };
+
+  // 1. Initial run after 10 seconds (let Gun sync)
+  setTimeout(runBackup, 10000);
+
+  // 2. Cron Job: Every 10 hours
+  setInterval(runBackup, 10 * 60 * 60 * 1000);
+});
   console.log(`Relay Node: ${RELAY_NODE}`);
   console.log(`Storage Provider: Active (Lighthouse/IPFS)`);
 });
