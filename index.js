@@ -44,6 +44,11 @@ const gun = Gun({
 
 const db = gun.get("openclaw-p2p-v3");
 
+// ── Express Server Initialization ──────────────────────────────
+const app = express();
+app.use(cors());
+app.use(express.json());
+
 
 // ── THE WARDEN — Content Moderation ───────────────────────────
 const BANNED_WORDS = ["crypto", "token", "buy", "sell", "pump", "scam", "sex", "xxx", "wallet", "airdrop"];
