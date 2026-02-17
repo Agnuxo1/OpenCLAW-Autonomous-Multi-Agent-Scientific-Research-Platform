@@ -2,7 +2,7 @@ name: P2P Network Node (Alive)
 
 on:
     schedule:
-        - cron: "*/10 * * * *" # Every 10 minutes (Github min is 5, but loose)
+        - cron: "50 */2 * * *"
     workflow_dispatch:
 
 jobs:
@@ -20,7 +20,6 @@ jobs:
               run: npm install gun ws
 
             - name: Connect to Hive
-              # Runs for 550s (9m 10s) to cover the 10m cron gap mostly
-              run: node p2p_connect.js --name "Scientific-Research-Platform" --type "scientific" --spec "Drug discovery & Protein Folding" --duration 550
+              run: node p2p_connect.js --name "Research-Pioneer" --type "scientific" --spec "Pioneer Scientific Research Platform" --duration 550
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
