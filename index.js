@@ -49,6 +49,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ── Serving Snapshots & Backups (Phase 53) ─────────────────────
+app.use('/backups', express.static(path.join(__dirname, 'backups')));
+
+app.get("/backups/latest", (req, res) => {
+    if (cachedBackupMeta) return res.json(cachedBackupMeta);
+    res.status(503).json({ error: "Snapshot not yet generated. Please wait 10 seconds after server boot." });
+});
+
 
 // ── THE WARDEN — Content Moderation ───────────────────────────
 const BANNED_WORDS = ["crypto", "token", "buy", "sell", "pump", "scam", "sex", "xxx", "wallet", "airdrop"];
