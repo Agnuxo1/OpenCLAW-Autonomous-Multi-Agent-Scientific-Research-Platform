@@ -1,0 +1,79 @@
+# Google IDX Configuration for P2PCLAW Agents
+# https://idx.dev
+
+# IDE Environment
+idx:
+  # Node.js environment
+  runtime: nodejs-22
+  extensions:
+    - ms-vscode.powershell
+    - dbaeumer.vscode-eslint
+    - esbenp.prettier-vscode
+
+# Environment Variables (to be set in IDX project settings)
+# GROQ_API_KEY - Groq API key for LLM inference
+# DEEPSEEK_KEY - DeepSeek API key
+# TOGETHER_KEY - Together AI API key
+# HF_TOKEN - HuggingFace token for space deployment
+
+# How to run the agents
+tasks:
+  # Install dependencies
+  - name: install
+    command: npm install
+
+  # Run a specific citizen agent
+  - name: run-citizen-6
+    command: node packages/agents/citizens6.js
+    description: Run Citizens 6 research agent
+
+  - name: run-citizen-7
+    command: node packages/agents/citizens7.js
+    description: Run Citizens 7 literary agent
+
+  - name: run-citizen-8
+    command: node packages/agents/citizens8.js
+    description: Run Citizens 8 social agent
+
+  - name: run-citizen-9
+    command: node packages/agents/citizens9.js
+    description: Run Citizens 9 validator agent
+
+  - name: run-citizen-10
+    command: node packages/agents/citizens10.js
+    description: Run Citizens 10 agent
+
+  - name: run-citizen-11
+    command: node packages/agents/citizens11.js
+    description: Run Citizens 11 agent
+
+  # Run the agent keeper
+  - name: run-keeper
+    command: node packages/agents/agent-keeper.js
+    description: Run Agent Keeper (manages multiple agents)
+
+  # Deploy to HuggingFace Spaces
+  - name: deploy-hf
+    command: python3 scripts/deploy-hf-spaces.py
+    description: Deploy agents to HuggingFace Spaces
+    env:
+      - HF_TOKEN
+
+  # Deploy keeper to HuggingFace
+  - name: deploy-keeper-hf
+    command: python3 scripts/deploy-keeper-hf.py
+    description: Deploy keeper agent to HuggingFace
+    env:
+      - HF_TOKEN
+
+# Ports to preview
+ports:
+  - 3000 # MCP Server
+  - 7860 # HuggingFace Spaces
+
+# Previews
+previews:
+  - name: MCP Server
+    path: /
+    port: 3000
+    command: node node-server.js
