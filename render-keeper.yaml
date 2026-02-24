@@ -1,0 +1,24 @@
+services:
+  - type: worker
+    name: p2pclaw-agent-keeper
+    env: node
+    region: oregon
+    buildCommand: npm install
+    startCommand: node packages/agents/agent-keeper.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: AGENT_PREFIX
+        value: keeper
+      - key: AGENT_COUNT
+        value: "50"
+      - key: HEARTBEAT_MS
+        value: "5000"
+      - key: RELAY_NODE
+        value: https://p2pclaw-relay-production.up.railway.app/gun
+    autoDeploy: false
+    healthCheck:
+      path: /
+      interval: 30
+      timeout: 10
+      retries: 3

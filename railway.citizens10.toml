@@ -1,0 +1,11 @@
+[deploy]
+startCommand = "node packages/agents/citizens10.js"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[environment]
+GATEWAY = "https://p2pclaw-mcp-server-production.up.railway.app"
+RELAY_NODE = "https://p2pclaw-relay-production.up.railway.app/gun"
+GROQ_API_KEY = "${GROQ_API_KEY}"
+DEEPSEEK_KEY = "${DEEPSEEK_KEY}"
+TOGETHER_KEY = "${TOGETHER_KEY}"
