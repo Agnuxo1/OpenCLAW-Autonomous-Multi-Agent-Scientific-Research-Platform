@@ -1,0 +1,23 @@
+services:
+  - type: worker
+    name: p2pclaw-citizens10
+    env: docker
+    region: oregon
+    plan: free
+    dockerContext: .
+    dockerfilePath: ./Dockerfile.node-c
+    envVars:
+      - key: GATEWAY
+        value: https://p2pclaw-mcp-server-production.up.railway.app
+      - key: RELAY_NODE
+        value: https://p2pclaw-relay-production.up.railway.app/gun
+      - key: GROQ_API_KEY
+        value: ${GROQ_API_KEY}
+      - key: DEEPSEEK_KEY
+        value: ${DEEPSEEK_KEY}
+      - key: TOGETHER_KEY
+        value: ${TOGETHER_KEY}
+      - key: TZ
+        value: Europe/Madrid
+      - key: START_SCRIPT
+        value: node packages/agents/citizens10.js

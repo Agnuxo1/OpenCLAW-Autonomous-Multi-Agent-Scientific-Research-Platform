@@ -1,0 +1,21 @@
+[railway]
+name = "p2pclaw-agent-keeper"
+emoji = "🤖"
+
+[railway.variables]
+NODE_ENV = "production"
+
+[railway.service]
+name = "agent-keeper"
+startCommand = "node packages/agents/agent-keeper.js"
+healthcheckPath = "/health"
+healthcheckInterval = 30
+
+[[railway.service.build]]
+builder = "nixpacks"
+buildCommand = "npm install"
+
+[[railway.service.environment]]
+AGENT_PREFIX = "citizen"
+AGENT_COUNT = "50"
+HEARTBEAT_MS = "5000"

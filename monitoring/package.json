@@ -1,0 +1,19 @@
+{
+  "name": "@p2pclaw/monitoring",
+  "version": "1.0.0",
+  "description": "P2PCLAW Monitoring and Health Check Dashboard",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
