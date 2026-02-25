@@ -26,15 +26,15 @@
  *   Start command: node citizens7.js
  */
 
-import axios from "axios";
 // ── SECTION 1: Imports ──────────────────────────────────────────────────────
+import axios from "axios";
 import Gun from "gun";
-import { validatePaper } from "../api/src/utils/validationUtils.js";
+import { validatePaper } from "./validationUtils.js";
+import { generatePaper, rewritePaper } from "./llm-writer.js";
 
 // ── SECTION 2: Configuration ────────────────────────────────────────────────
 const GATEWAY = process.env.GATEWAY || "https://p2pclaw-mcp-server-production.up.railway.app";
 const RELAY_NODE = process.env.RELAY_NODE || "https://p2pclaw-relay-production.up.railway.app/gun";
-const GROQ_API_KEY = process.env.GROQ_API_KEY || null;
 const SKIP_PAPERS = process.env.SKIP_PAPERS === "true";
 const CITIZENS_SUBSET = process.env.CITIZENS_SUBSET
   ? new Set(process.env.CITIZENS_SUBSET.split(",").map((s) => s.trim()))
@@ -535,66 +535,63 @@ function getMessage(archetype, state) {
 }
 
 async function publishPaper(citizen) {
-  if (SKIP_PAPERS || !citizen.isResearcher || !citizen.paperTopic) return;
-  const paperId = `paper-${citizen.id}-${Date.now()}`;
-  const timestamp = Date.now();
+  if (SKIP_PAPERS || !citizen.isResearcher || !citizen.paperTopic) { return; }
   const investigation = citizen.paperInvestigation || `inv-${citizen.id.split("-")[1]}`;
 
+  console.log(`[${citizen.id}] Generating paper via LLM...`);
+  let content = await generatePaper(citizen);
+
   const paper = {
-    id: paperId,
     title: citizen.paperTopic,
     author: citizen.name,
-    authorId: citizen.id,
-    investigation,
-    abstract: `${citizen.specialization} research paper published via autonomous agent.`,
-    content: `# ${citizen.paperTopic}\n\n## Abstract\n\nThis paper explores ${citizen.specialization} within the context of decentralized peer review networks.\n\n## Introduction\n\nScientific communication has evolved significantly with digital networks.\n\n## Methodology\n\nAnalysis of publication patterns and communication strategies.\n\n## Results\n\nFindings suggest new approaches to ${citizen.specialization}.\n\n## Conclusion\n\nFurther research is warranted in this area.\n\n---\n*Published by ${citizen.name} (${citizen.role})*`,
-    timestamp,
-    validated: false,
-    votes: {},
+    agentId: citizen.id,
+    investigation_id: investigation,
+    content,
+    tier: "final",
   };
 
+  // First attempt
   try {
-    await axios.post(`${GATEWAY}/papers/submit`, paper, { timeout: 10000 });
-    console.log(`[${citizen.id}] Published paper: ${paperId}`);
+    const res = await axios.post(`${GATEWAY}/publish-paper`, paper, { timeout: 20000 });
+    console.log(`[${citizen.id}] Paper published: ${res.data?.paper_id || "ok"}`);
+    return;
   } catch (err) {
-    console.log(`[${citizen.id}] Paper publish failed: ${err.message}`);
+    const errData = err.response?.data;
+    console.log(`[${citizen.id}] First publish attempt failed (${err.response?.status}): ${errData?.error || err.message}`);
+
+    // If validation failed (not a server error), rewrite and retry once
+    if (err.response?.status === 400 || err.response?.status === 403) {
+      console.log(`[${citizen.id}] Rewriting paper to fix: ${(errData?.issues || [errData?.message]).join("; ")}`);
+      content = await rewritePaper(citizen, content, errData);
+      paper.content = content;
+      paper.tier = "draft"; // relax to draft on retry
+
+      try {
+        const res2 = await axios.post(`${GATEWAY}/publish-paper`, paper, { timeout: 20000 });
+        console.log(`[${citizen.id}] Paper published after rewrite: ${res2.data?.paper_id || "ok"}`);
+      } catch (err2) {
+        console.log(`[${citizen.id}] Rewrite also failed (${err2.response?.status}): ${err2.response?.data?.error || err2.message}`);
+      }
+    }
   }
 }
 
 async function bootstrapAndValidate(citizen) {
-  if (!citizen.isValidator) return;
-  if (!SKIP_PAPERS) {
-    const bootstrapPaper = {
-      id: `bootstrap-${citizen.id}-${Date.now()}`,
-      title: `Bootstrap Validation: ${citizen.specialization}`,
-      author: citizen.name,
-      authorId: citizen.id,
-      investigation: "inv-bootstrap",
-      abstract: "Bootstrap paper for validator initialization.",
-      content:
-        "# Bootstrap\n\nThis is a validation bootstrap paper.\n\n## Method\n\nStandard validation protocol.\n\n## Results\n\nPass.\n\n---\n*Bootstrap by ${citizen.name}*",
-      timestamp: Date.now(),
-      validated: false,
-      votes: {},
-    };
-    try {
-      await axios.post(`${GATEWAY}/papers/submit`, bootstrapPaper, { timeout: 10000 });
-    } catch {}
-  }
+  if (!citizen.isValidator) { return; }
 
   setTimeout(
     async () => {
       try {
-        const res = await axios.get(`${GATEWAY}/papers/mempool`, { timeout: 10000 });
+        const res = await axios.get(`${GATEWAY}/mempool`, { timeout: 10000 });
         const mempool = res.data?.papers || [];
-        if (mempool.length === 0) return;
+        if (mempool.length === 0) { return; }
         const toValidate = mempool[Math.floor(Math.random() * Math.min(3, mempool.length))];
-        if (!toValidate || toValidate.votes?.[citizen.id]) return;
+        if (!toValidate || toValidate.votes?.[citizen.id]) { return; }
 
-        const result = await validatePaper(toValidate.id, citizen.id);
-        const vote = result.isValid ? "approve" : "reject";
+        const result = await validatePaper(toValidate);
+        const vote = result.valid ? "approve" : "reject";
         await axios.post(
-          `${GATEWAY}/papers/vote`,
+          `${GATEWAY}/vote`,
           {
             paperId: toValidate.id,
             validatorId: citizen.id,
@@ -604,7 +601,9 @@ async function bootstrapAndValidate(citizen) {
           { timeout: 10000 },
         );
         console.log(`[${citizen.id}] Validated: ${toValidate.id} (${vote})`);
-      } catch {}
+      } catch (e) {
+        console.log(`[${citizen.id}] Validation error: ${e.message}`);
+      }
     },
     VALIDATE_DELAY_MS + Math.random() * 5000,
   );
