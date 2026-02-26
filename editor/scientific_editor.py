@@ -318,9 +318,15 @@ def paper_key(paper_id: str) -> int:
     """Deterministic key index from paper ID for round-robin key assignment."""
     return int(hashlib.md5(paper_id.encode()).hexdigest(), 16) % len(TOGETHER_KEYS)
 
-def paper_needs_enhancement(paper: dict) -> bool:
-    """Check if a paper hasn't been enhanced yet."""
-    return not paper.get("enhanced_by") and not paper.get("pdf_url")
+def paper_needs_enhancement(paper: dict, agent_id: str = "", processed_ids: set = None) -> bool:
+    """Check if a paper hasn't been enhanced by this specific agent yet."""
+    if processed_ids and paper.get("paperId") in processed_ids:
+        return False
+    # Check if this specific agent already enhanced it
+    enhanced_by = paper.get("enhanced_by", "")
+    if agent_id and agent_id in str(enhanced_by):
+        return False
+    return True
 
 def sanitize_text(text: str, max_len: int = 2000) -> str:
     """Clean text for PDF generation — remove markdown, replace non-latin1 chars, truncate."""
@@ -694,15 +700,19 @@ def post_chat(gateway: str, agent: dict, message: str) -> bool:
         return False
 
 def publish_enhanced_paper(gateway: str, agent: dict, paper: dict) -> bool:
-    """Publish the enhanced version of a paper back to the gateway."""
+    """Publish the enhanced version of a paper back to the gateway with a unique title."""
     try:
+        original_title = paper.get("title", "Enhanced Paper")
+        # Suffix the title with the agent's role so it never collides with the original
+        role_tag = agent.get("role", agent["id"]).split()[0]  # e.g. "Citation", "Structure"
+        enhanced_title = f"{original_title} [{role_tag} Enhanced by {agent['name']}]"
+
         payload = {
-            "title":   paper.get("title", "Enhanced Paper"),
+            "title":   enhanced_title,
             "content": paper.get("content", ""),
             "author":  agent["name"],
             "agentId": agent["id"],
             "tier":    "final",
-            "force":   True,  # override duplicate check for enhanced re-publish
             "pdf_url": paper.get("pdf_url", ""),
             "archive_url": paper.get("pdf_url", ""),
             "enhanced_by": agent["id"],
@@ -741,6 +751,8 @@ def run_agent(agent: dict):
     start_time = time.time()
     max_secs   = RUN_MINUTES * 60
     papers_processed = 0
+    # Track paper IDs processed in this session to avoid re-processing on restart
+    processed_ids: set = set()
 
     # Announce online
     welcome = random.choice([
@@ -753,7 +765,7 @@ def run_agent(agent: dict):
 
     while time.time() - start_time < max_secs:
         papers = fetch_papers(gateway, limit=30)
-        candidates = [p for p in papers if paper_needs_enhancement(p)]
+        candidates = [p for p in papers if paper_needs_enhancement(p, agent["id"], processed_ids)]
 
         if not candidates:
             print(f"[{agent['id']}] No unenhanced papers found. Waiting 5min...")
@@ -788,6 +800,9 @@ def run_agent(agent: dict):
 
             # 4. Publish enhanced paper back
             published = publish_enhanced_paper(gateway, agent, enhanced)
+            # Always mark as processed regardless of publish outcome
+            if paper_id:
+                processed_ids.add(paper_id)
 
             # 5. Validate in mempool (for validator agent)
             if agent["focus"] == "validation":
