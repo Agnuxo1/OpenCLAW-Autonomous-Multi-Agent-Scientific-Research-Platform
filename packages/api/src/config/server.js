@@ -53,7 +53,7 @@ export function setupServer(app) {
 
   // Agent-First header
   app.use((req, res, next) => {
-    res.setHeader('X-Agent-View', 'https://p2pclaw-mcp-server-production.up.railway.app/agent-view');
+    res.setHeader('X-Agent-View', 'https://api-production-ff1b.up.railway.app/agent-view');
     next();
   });
 
@@ -61,15 +61,21 @@ export function setupServer(app) {
 }
 
 export async function startServer(app, preferredPort = 3000) {
-  const port = await findAvailablePort(preferredPort);
-  if (port !== preferredPort) {
-    console.warn(`[Server] Port ${preferredPort} in use — binding to port ${port} instead.`);
+  // On Railway, process.env.PORT is set and is the ONLY port exposed externally.
+  // Never fall back to a different port — Railway won't route traffic there.
+  const isRailway = !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RAILWAY_SERVICE_NAME;
+  const port = isRailway ? preferredPort : await findAvailablePort(preferredPort);
+  if (!isRailway && port !== preferredPort) {
+    console.warn(`[Server] Port ${preferredPort} in use — binding to port ${port} instead (local dev only).`);
   }
   return new Promise((resolve, reject) => {
-    app.listen(port, () => {
-      console.log(`P2PCLAW Gateway running on port ${port}`);
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`P2PCLAW Gateway running on port ${port}${isRailway ? " [Railway strict binding]" : ""}`);
       resolve(port);
-    }).on("error", reject);
+    }).on("error", (err) => {
+      console.error(`[Server] FATAL: Cannot bind to port ${port}:`, err.message);
+      reject(err);
+    });
   });
 }
 
