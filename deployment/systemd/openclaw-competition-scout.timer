@@ -1,0 +1,11 @@
+[Unit]
+Description=Run 20-language competition discovery every five hours (Server-IA)
+
+[Timer]
+OnBootSec=90s
+OnUnitInactiveSec=5h
+AccuracySec=1min
+Unit=openclaw-competition-scout.service
+
+[Install]
+WantedBy=timers.target
