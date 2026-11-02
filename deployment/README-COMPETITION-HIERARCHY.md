@@ -32,7 +32,8 @@ A dedicated OpenClaw hierarchy on the owner's Debian Server-IA, designed for pro
 - Cognitiva skill installed to shared managed skills and confirmed `ready`.
 - Fourteen workspaces and role-specific `AGENTS.md` files created under `/srv/openclaw/competition-agents`, a symlink to the secondary SSD `/mnt/datos/openclaw`, which had approximately 606 GB free before deployment.
 - Only **one NVIDIA RTX 3090** currently appeared in `nvidia-smi`. Do not promise two simultaneous GPU slots until hardware is independently diagnosed.
-- No Anthropic authenticated profile confirmed; no verified free-credit balance; no confirmed JEV API endpoint or resource lease; no verified Gmail OAuth; no gateway continuous-service health check. **Configured does not mean running experiments or submitting competitions.**
+- Gateway service installed as a systemd user service and confirmed running, listening **only on 127.0.0.1:18789** with a generated local auth token; deep status reported connectivity OK and OpenClaw 2026.10.9. No external/remote dashboard exposure was enabled.
+- No Anthropic authenticated profile confirmed; no verified free-credit balance; no confirmed JEV API endpoint or GPU resource lease; no verified Gmail OAuth; no production scheduler or submission flow. **Configured does not mean running experiments or submitting competitions.**
 
 ## Required deployment checks before unattended execution
 
