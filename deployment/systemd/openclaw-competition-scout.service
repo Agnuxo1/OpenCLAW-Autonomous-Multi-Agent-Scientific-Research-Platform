@@ -1,0 +1,18 @@
+[Unit]
+Description=Server-IA OpenClaw Competition Scout (20 languages, source verification pending)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/openclaw/competition-state
+Environment=COMPETITION_STATE_DIR=/srv/openclaw/competition-state
+ExecStart=/usr/bin/python3 /srv/openclaw/competition-code/competition_scout.py
+TimeoutStartSec=480
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
+MemoryMax=384M
+CPUQuota=50
+StandardOutput=journal
+StandardError=journal
