@@ -71,7 +71,7 @@ def label(cfg):
 
 def evaluate_shape(shape, train_writer, test_writer, rng, start):
     n, d = shape
-    configs = ["baseline"] + [cfg for cfg in GRID if cfg[0] <= d]
+    configs = ["baseline"] + list(GRID)
     estimates = {}
     for seeds, split, writer in (
         (TRAIN_SEEDS, "train", train_writer),
