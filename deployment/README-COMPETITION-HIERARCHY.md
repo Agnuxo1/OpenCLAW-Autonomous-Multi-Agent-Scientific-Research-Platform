@@ -50,3 +50,12 @@ A dedicated OpenClaw hierarchy on the owner's Debian Server-IA, designed for pro
 Every sprint must start from official rules, establish baselines, use open-source numerical or physical solvers where appropriate, run controlled measurements with seeds and preserved raw logs, and submit evidence-backed artifacts. `SUBMITTED_VERIFIED` requires an official confirmation. GitHub repositories must be professional, but may need to remain private until competition rules and dataset licences allow publication. Avoid large checkpoints in ordinary Git.
 
 See the shared Cognitiva skill for full methodological requirements.
+
+## 24/7 scout deployment and validation (2026-11-02)
+
+- Installed `scripts/competition_scout.py` on Server-IA under `/srv/openclaw/competition-code`, paired with a persistent **systemd user timer** set to `OnUnitInactiveSec=5h` and isolated `competition-state` storage.
+- First actual run: 20/20 language feeds succeeded, **57 discovery candidates**, eight related public Agnuxo1 repositories, ten preexisting competition references seeded for re-verification; the systemd job exited with code 0. Discovery candidates are explicitly unverified.
+- Confirmed the next timer was queued for 2026-11-02 19:35 UTC; timer status active.
+- Installed `scripts/competition_watchdog.py` and registered native OpenClaw cron job `competition-watchdog-hourly` (job id `ce023214-f814-4a1c-be54-a9e47e79cfd2`). A manual `openclaw cron run ... --wait` returned **completionStatus=succeeded**, reporting the gateway, timer and scout as healthy.
+- Anthropic model auth and free credit are **not activated**. An older local Windows Anthropic credit configuration expired 2026-10-26, and its existing stored key failed the non-metered credential check with HTTP 401. Any replacement/new promotional balance must be verified before enabling cloud model calls.
+- The Fable/Opus/Sonnet/Haiku agent roles remain installed and correctly configured but will not execute until valid, spending-limited credentials and the real JEV oracle/GPU scheduler are integrated. No paid experiments, official registrations, or submissions have been performed by this deployment.
