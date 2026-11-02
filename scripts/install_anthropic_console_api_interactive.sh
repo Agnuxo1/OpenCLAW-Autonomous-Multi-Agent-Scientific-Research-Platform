@@ -10,7 +10,7 @@ if [[ ! -t 0 ]]; then
 fi
 
 BASE="$HOME/.openclaw"
-SWARM="$HOME/proyectos/claude-fable-competition-swarm-20261101"
+SWARM="/mnt/datos/proyectos/claude-fable-competition-swarm-20261101"
 if [[ ! -f "$SWARM/runner.py" ]]; then
   echo "ERROR: The existing Server-IA competition swarm is missing." >&2
   exit 3
@@ -74,7 +74,7 @@ if not key or "\n" in key or "\r" in key:
     raise ValueError("Invalid credential")
 base = Path.home() / ".openclaw"
 env_file = base / ".env"
-agent_secret = Path.home() / "proyectos/claude-fable-competition-swarm-20261101/secrets/anthropic.key"
+agent_secret = Path("/mnt/datos/proyectos/claude-fable-competition-swarm-20261101/secrets/anthropic.key")
 previous = env_file.read_text(encoding="utf-8") if env_file.exists() else ""
 lines = [s for s in previous.splitlines() if not s.strip().startswith("ANTHROPIC_API_KEY=")]
 lines.append("ANTHROPIC_API_KEY=" + key)
