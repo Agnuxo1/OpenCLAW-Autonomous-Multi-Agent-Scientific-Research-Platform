@@ -22,8 +22,11 @@ ROOT = Path("/mnt/datos/competition-24h")
 LOG = ROOT / "deadline_watchdog.jsonl"
 EARLY_TERMINATION_SECONDS = 120
 AUTHORIZED_RUNNERS = {
-    "vcc2026-transfer": "/mnt/datos/competition-24h/vcc/run.py",
-    "pdc2026": "/mnt/datos/competition-24h/pdc/run.py",
+    "vcc2026-transfer": ("/mnt/datos/competition-24h/vcc/run.py",),
+    "pdc2026": (
+        "/mnt/datos/competition-24h/pdc/run.py",
+        "/mnt/datos/competition-24h/pdc/replicate.py",
+    ),
 }
 ALLOWED_JOB_STATES = {"running", "queued"}
 
@@ -41,13 +44,13 @@ def record(entry: dict) -> None:
         handle.flush()
 
 
-def safe_unit(job: dict, runner: str) -> str:
+def safe_unit(job: dict, runners: tuple[str, ...]) -> str:
     """Verify the original project command before targeting its systemd unit."""
     identifier = job.get("id", "")
     command = job.get("command") or []
     if not re.fullmatch("[a-f0-9]{16}", identifier):
         raise ValueError("Unsafe job identifier")
-    if (len(command) < 2 or command[1] != runner
+    if (len(command) < 2 or command[1] not in runners
             or not command[0].startswith("/mnt/datos/competition-24h/")):
         raise ValueError("Worker command does not match the approved competition")
     return "servidor-ia-job-" + identifier + ".service"
