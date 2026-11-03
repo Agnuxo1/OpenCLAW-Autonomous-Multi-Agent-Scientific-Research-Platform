@@ -124,6 +124,14 @@ def collect() -> dict:
                 usage_rows.append(json.loads(line))
             except ValueError:
                 continue
+    extra_usage_path = ROOT / "source-review-usage.jsonl"
+    if extra_usage_path.is_file():
+        for line in extra_usage_path.read_text(encoding="utf-8").splitlines():
+            try:
+                usage_rows.append(json.loads(line))
+            except ValueError:
+                continue
+    usage_rows.sort(key=lambda row: row.get("time", ""))
     agent_list = []
     for item in manifest.get("jobs", []):
         state = read_json(ROOT / "state" / (item["id"] + ".json"))
@@ -271,6 +279,7 @@ Actualización automática cada 60 segundos.</small></header>
 <div class="notice"><strong>Importante:</strong> Los informes son borradores,
 no entregas oficiales. Este panel no acredita registros ni envío a concursos.
 Las GPU pueden estar inactivas cuando Claude ejecuta inferencia remota.
+<br><a href="ENTREGAS_Y_BLOQUEOS_20261103.md">Entregas confirmadas y requisitos urgentes</a>.
 <br>Auditoría científica local verificada:
 <a href="auditorias/Zetaris-independent-audit-20261103.md">Zetaris — reproducción de 48 casos</a>.
 </div>
