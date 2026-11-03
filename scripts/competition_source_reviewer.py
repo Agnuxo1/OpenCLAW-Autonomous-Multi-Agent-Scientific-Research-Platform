@@ -257,6 +257,11 @@ def run_one() -> None:
                 runner.get_key(), review_job, review_config,
                 instructions, [{"role": "user", "content": message}]
             )
+            with (ROOT / "source-review-usage.jsonl").open("a", encoding="utf-8") as usage_log:
+                usage_log.write(json.dumps({
+                    "agent": project, "time": now_utc(), "stage": "source-review",
+                    **usage
+                }, ensure_ascii=False) + "\n")
             if len(output.strip()) < 150:
                 raise ValueError("Model output is empty or truncated: no limitations section")
             REVIEWS.mkdir(parents=True, exist_ok=True)
