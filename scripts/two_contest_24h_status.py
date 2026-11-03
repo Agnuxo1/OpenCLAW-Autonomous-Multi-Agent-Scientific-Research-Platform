@@ -141,6 +141,12 @@ def snapshot() -> dict:
                 "agonism_verified": False,
                 "official_submission_changed": False,
             }
+        actual_status = state.get("status", "NOT_STARTED")
+        if actual_status in {"RUNNING", "WAITING_FOR_SAFE_RAM"}:
+            if active.get("state") in {"cancelled", "failed", "interrupted"}:
+                actual_status = "INTERRUPTED_" + active["state"].upper()
+            elif active.get("state") == "succeeded":
+                actual_status = "STOPPED_WITH_STALE_CHECKPOINT"
         summary.append({
             "contest": name,
             "project": project,
@@ -151,7 +157,7 @@ def snapshot() -> dict:
             "lease_ends": local_time(entry.get("plazo_utc")),
             "job_id": active.get("id"),
             "job_state": active.get("state", "NOT_SUBMITTED"),
-            "experiment_state": state.get("status", "NOT_STARTED"),
+            "experiment_state": actual_status,
             "checkpoint": local_time(
                 state.get("last_update_utc") or state.get("checked_utc")
                 or state.get("updated_at")),
