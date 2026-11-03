@@ -127,6 +127,7 @@ def collect() -> dict:
     agent_list = []
     for item in manifest.get("jobs", []):
         state = read_json(ROOT / "state" / (item["id"] + ".json"))
+        review = read_json(ROOT / "source-review-state" / (item["id"] + ".json"))
         agent_list.append({
             "id": item["id"],
             "name": item.get("name", item["id"]),
@@ -134,6 +135,10 @@ def collect() -> dict:
             "status": state.get("status", "NOT_STARTED"),
             "updated": madrid_time(state.get("time")),
             "calls": state.get("api_calls", 0),
+            "source_review": review.get("status", "NOT_STARTED"),
+            "review_report": f"revisiones/{item['id']}.md"
+            if (ROOT / "source-reviews" / (item["id"] + ".md")).is_file()
+            and review.get("status") == "REVIEW_DRAFT_READY" else "",
             "report": f"informes/{item['id']}.md"
             if (ROOT / "reports" / (item["id"] + ".md")).is_file() else "",
         })
@@ -155,6 +160,10 @@ def collect() -> dict:
         "api_local_cap_usd": manifest.get("global_max_spend_usd"),
         "api_credit_balance_verified": False,
         "reports_count": sum(bool(x["report"]) for x in agent_list),
+        "source_reviews_count": sum(bool(x["review_report"]) for x in agent_list),
+        "zetaris_verified_local_audit": (
+            TARGET / "auditorias/Zetaris-independent-audit-20261103.md"
+        ).is_file(),
         "review_needed": states.count("DRAFT_READY_FOR_INDEPENDENT_REVIEW"),
         "gpu": collect_gpu(),
         "agents": agent_list,
@@ -181,6 +190,20 @@ def export_reports() -> None:
             + content
         )
         atomic_write(destination / report.name, content)
+    review_dir = ROOT / "source-reviews"
+    if review_dir.is_dir():
+        second_dest = TARGET / "revisiones"
+        second_dest.mkdir(parents=True, exist_ok=True)
+        for source_file in review_dir.glob("*.md"):
+            status = read_json(ROOT / "source-review-state" / (source_file.stem + ".json"))
+            if status.get("status") != "REVIEW_DRAFT_READY":
+                continue
+            if source_file.stat().st_size > 100_000:
+                continue
+            atomic_write(
+                second_dest / source_file.name,
+                source_file.read_text(encoding="utf-8", errors="replace"),
+            )
 
 
 def render_html(data: dict) -> str:
@@ -202,13 +225,16 @@ def render_html(data: dict) -> str:
     for item in data["agents"]:
         link = (f"<a href='{e(item['report'])}'>Abrir borrador</a>"
                 if item["report"] else "Sin informe")
+        second_link = (f"<a href='{e(item['review_report'])}'>Revisión de fuentes</a>"
+                       if item["review_report"] else e(item["source_review"]))
         agent_rows.append(
             "<tr>"
             + f"<td>{e(item['name'])}</td>"
             + f"<td>{e(item['status'])}</td>"
             + f"<td>{e(item['updated'])}</td>"
             + f"<td>{e(item['deadline'])}</td>"
-            + f"<td>{link}</td></tr>"
+            + f"<td>{link}</td>"
+            + f"<td>{second_link}</td></tr>"
         )
     jobs = "".join(row([
         x["project"], x["status"], x["lane"],
@@ -244,12 +270,15 @@ Actualización automática cada 60 segundos.</small></header>
 </div>
 <div class="notice"><strong>Importante:</strong> Los informes son borradores,
 no entregas oficiales. Este panel no acredita registros ni envío a concursos.
-Las GPU pueden estar inactivas cuando Claude ejecuta inferencia remota.</div>
+Las GPU pueden estar inactivas cuando Claude ejecuta inferencia remota.
+<br>Auditoría científica local verificada:
+<a href="auditorias/Zetaris-independent-audit-20261103.md">Zetaris — reproducción de 48 casos</a>.
+</div>
 <h2>GPU NVIDIA (lectura directa)</h2><section><table><thead><tr>
 <th>GPU</th><th>Uso</th><th>Memoria</th><th>Consumo</th></tr></thead><tbody>""" + gpu_rows + """</tbody></table></section>
 <h2>Concursos y borradores</h2><section><table><thead><tr>
 <th>Concurso</th><th>Estado del agente</th><th>Última actualización</th>
-<th>Plazo declarado</th><th>Resultado disponible</th></tr></thead><tbody>""" + "".join(agent_rows) + """</tbody></table></section>
+<th>Plazo declarado</th><th>Borrador</th><th>Revisión de fuentes</th></tr></thead><tbody>""" + "".join(agent_rows) + """</tbody></table></section>
 <h2>Últimos trabajos gestionados por JEV</h2><section><table><thead><tr>
 <th>Proyecto</th><th>Estado</th><th>Carril</th><th>Fecha</th><th>ID</th>
 </tr></thead><tbody>""" + (jobs or "<tr><td colspan='5'>Sin trabajos</td></tr>") + """</tbody></table></section>
@@ -276,7 +305,10 @@ def render_markdown(data: dict) -> str:
     for x in data["agents"]:
         lines.append(f"- {x['name']}: {x['status']}; "
                      f"actualizado {x['updated']}; "
-                     f"borrador {x['report'] or 'no'}")
+                     f"borrador {x['report'] or 'no'}; "
+                     f"revisión de fuentes {x['source_review']}")
+    lines.extend(["", "## Auditorías independientes"])
+    lines.append("Zetaris: auditorias/Zetaris-independent-audit-20261103.md (reproducido localmente)")
     lines.extend(["", "## GPU"])
     for x in data["gpu"]:
         lines.append(f"- GPU {x['index']}: {x['gpu_percent']} %; "
