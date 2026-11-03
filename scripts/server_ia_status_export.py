@@ -43,7 +43,7 @@ def run_read_only(args: list[str], timeout: int = 7) -> str:
         result = subprocess.run(
             args, capture_output=True, text=True, timeout=timeout, check=False
         )
-        return result.stdout.strip() if result.returncode == 0 else ""
+        return result.stdout.strip() if result.stdout.strip() else ""
     except (OSError, subprocess.TimeoutExpired):
         return ""
 
