@@ -135,18 +135,23 @@ def structure_confidence(result_dir: Path) -> dict:
     data = json.loads(files[0].read_text(encoding="utf-8"))
     inter = data.get("pair_chains_iptm")
     pair = None
-    if isinstance(inter, list) and len(inter) >= 3:
+    if isinstance(inter, dict):
         try:
-            pair = float(inter[0][2])
+            forward = float(inter["0"]["2"])
+            reverse = float(inter["2"]["0"])
+            pair = min(forward, reverse)
+        except (KeyError, TypeError, ValueError):
+            pair = None
+    elif isinstance(inter, list) and len(inter) >= 3:
+        try:
+            pair = min(float(inter[0][2]), float(inter[2][0]))
         except (TypeError, ValueError, IndexError):
             pair = None
     global_iptm = data.get("iptm")
-    surrogate = pair if pair is not None else global_iptm
     return {
         "status": "STRUCTURE_PREDICTED",
-        "score": float(surrogate) if surrogate is not None else None,
-        "score_type": "Boltz_NK2R_VHH_pair_iptm" if pair is not None
-        else "Boltz_global_complex_iptm_proxy_NOT_official",
+        "score": pair,
+        "score_type": "Boltz_conservative_bidirectional_NK2R_VHH_pair_iptm_NOT_official",
         "boltz_iptm": global_iptm,
         "nk2r_vhh_pair_iptm": pair,
         "ptm": data.get("ptm"),
@@ -170,7 +175,7 @@ def run_one(identifier: str, sequence: str, reference: dict, seed: int,
         "--cache", str(ROOT / "boltz-cache"),
         "--out_dir", str(run_dir),
         "--accelerator", "gpu", "--devices", "1",
-        "--num_workers", "1", "--preprocessing-threads", "1",
+        "--num_workers", "0", "--preprocessing-threads", "1",
         "--recycling_steps", "3", "--sampling_steps", "100",
         "--diffusion_samples", "1", "--seed", str(seed),
         "--max_parallel_samples", "1",
