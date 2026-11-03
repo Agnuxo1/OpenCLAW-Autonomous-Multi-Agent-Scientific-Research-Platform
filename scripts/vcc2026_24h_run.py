@@ -136,7 +136,7 @@ def evaluator_gpu_script() -> Path:
     if ('"device=cpu"' not in source or '"de.backend=pdex"' not in source):
         raise ValueError("Original local evaluator has unexpected parameters")
     patched = source.replace('"device=cpu"', '"device=cuda"').replace(
-        '"de.backend=pdex"', '"de.backend=cupy"')
+        '"de.backend=pdex"', '"de.backend=gpudge"')
     path = SOURCE / "run_eval_gpu.py"
     path.write_text(patched, encoding="utf-8")
     import py_compile
@@ -165,6 +165,18 @@ def run_case(name: str, edits: dict, context: str, seed: int,
                 "candidate": name, "context": context, "seed": seed,
                 "score": verified["overall"], "metrics": verified["metrics"]}
     env = os.environ.copy()
+    cuda_root = ROOT / "env/lib/python3.13/site-packages/nvidia"
+    cuda_libs = [
+        str(folder) for folder in sorted(cuda_root.glob("*/lib"))
+        if folder.is_dir()
+    ]
+    if not any((Path(folder) / "libcublas.so.12").is_file()
+               for folder in cuda_libs):
+        raise RuntimeError("CUDA 12 CUBLAS libraries missing from isolated venv")
+    env["LD_LIBRARY_PATH"] = ":".join(
+        cuda_libs + ([env["LD_LIBRARY_PATH"]]
+                     if env.get("LD_LIBRARY_PATH") else [])
+    )
     env.update({
         "HDF5_USE_FILE_LOCKING": "FALSE",
         "CELL_EVAL2": str(CE),
@@ -181,12 +193,7 @@ def run_case(name: str, edits: dict, context: str, seed: int,
         "--bundle", str(fixture / "bundle"),
     ]
     attempted = []
-    for backend, command in [
-        ("CUDA_CUPY", basic),
-        ("CPU_PDEX_FALLBACK", [
-            str(PY), str(SOURCE / "run_eval.py"), *basic[2:]
-        ]),
-    ]:
+    for backend, command in [("CUDA_GPUDGE", basic)]:
         remaining = max(1, deadline - time.monotonic())
         if remaining < 20 or STOP:
             break
@@ -290,6 +297,7 @@ def main() -> int:
     previously = {
         (r.get("candidate"), r.get("context"), r.get("seed"))
         for r in rows
+        if r.get("status") in ("SUCCEEDED", "REUSED_VALIDATED")
     }
     state = {
         "project": "vcc2026-transfer",
