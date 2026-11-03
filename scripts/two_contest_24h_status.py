@@ -98,6 +98,9 @@ def snapshot() -> dict:
         active = next((x for x in related if x.get("state") == "running"),
                       related[0] if related else {})
         state = read_json(ROOT / folder / "experiment_state.json")
+        replication = read_json(ROOT / folder / "replication_state.json") if folder == "pdc" else {}
+        if replication and "replicate.py" in " ".join(active.get("command", [])):
+            state = replication
         records = read_lines(ROOT / folder / "results" / (
             "local_scores.jsonl" if folder == "vcc"
             else "candidate_metrics.jsonl"
@@ -113,7 +116,7 @@ def snapshot() -> dict:
                 "last_score": round(valid[-1]["score"], 6) if valid else None,
                 "last_context": valid[-1].get("context") if valid else None,
                 "best_fully_validated": state.get("ranked_complete_candidates", [])[:3],
-                "metric_type": "Local held-out cell-eval2 six-metric average",
+                "metric_type": "Local held-out cell-eval2 six-metric average; H1 uses a distinct fixed 96-cell public sample, not the full H1 score",
                 "official_submission_changed": False,
             }
         else:
@@ -126,6 +129,9 @@ def snapshot() -> dict:
             progress = {
                 "structures_predicted": len(valid),
                 "raw_attempts": len(records),
+                "replication_status": replication.get("status", "NOT_STARTED"),
+                "completed_valid_replicates": replication.get("completed_valid_replicates", 0),
+                "best_replicated_candidates": replication.get("replicated_ranking", [])[:3],
                 "best_candidates": [
                     {"id": x.get("candidate"),
                      "boltz_nk2r_vhh_iptm": round(x["nk2r_vhh_pair_iptm"], 5)}
@@ -147,7 +153,8 @@ def snapshot() -> dict:
             "job_state": active.get("state", "NOT_SUBMITTED"),
             "experiment_state": state.get("status", "NOT_STARTED"),
             "checkpoint": local_time(
-                state.get("last_update_utc") or state.get("checked_utc")),
+                state.get("last_update_utc") or state.get("checked_utc")
+                or state.get("updated_at")),
             "progress": progress,
         })
     return {
@@ -206,7 +213,7 @@ def main() -> int:
         summary = (
             str(progress["validated_evaluations"]) + " / 81 puntuaciones"
             if e["project"] == "vcc2026-transfer"
-            else str(progress["structures_predicted"]) + " estructuras"
+            else str(progress["structures_predicted"]) + " estructuras; " + str(progress.get("completed_valid_replicates", 0)) + " réplicas"
         )
         table.append(
             "<tr><td>" + escape(e["gpu"]) + "</td><td>" +
