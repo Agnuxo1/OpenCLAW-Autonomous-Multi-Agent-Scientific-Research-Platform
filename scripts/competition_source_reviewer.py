@@ -28,8 +28,8 @@ import runner
 
 STATE = ROOT / "source-review-state"
 REVIEWS = ROOT / "source-reviews"
-MAX_NEW_COST_PER_AGENT_USD = 0.50
-SOURCE_LIMIT_CHARS = 14_000
+MAX_NEW_COST_PER_AGENT_USD = 0.75
+SOURCE_LIMIT_CHARS = 10_000
 REPORT_LIMIT_CHARS = 6_500
 FILE_LIMIT_CHARS = 2_300
 FILES_PER_PROJECT = 7
@@ -233,7 +233,7 @@ def run_one() -> None:
         )
         review_config = dict(configuration)
         review_config["per_request_max_tokens"] = min(
-            int(review_config["per_request_max_tokens"]), 1500
+            int(review_config["per_request_max_tokens"]), 2100
         )
         attempts = int(status.get("attempts", 0)) + 1
         write_json(status_path, {
@@ -280,7 +280,7 @@ def run_one() -> None:
                 "status": ("REVIEW_FAILED_FINAL" if attempts >= ATTEMPTS_MAX
                            else "REVIEW_RETRY_PENDING"),
                 "attempts": attempts, "failed_at": now_utc(),
-                "error_class": type(error).__name__,
+                "error_class": type(error).__name__, "error_detail": str(error)[:200],
             })
             print(json.dumps({
                 "project": project, "status": "REVIEW_FAILED",
