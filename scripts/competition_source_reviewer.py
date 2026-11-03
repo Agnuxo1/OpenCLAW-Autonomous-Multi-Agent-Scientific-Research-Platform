@@ -28,7 +28,7 @@ import runner
 
 STATE = ROOT / "source-review-state"
 REVIEWS = ROOT / "source-reviews"
-MAX_NEW_COST_PER_AGENT_USD = 0.75
+MAX_NEW_COST_PER_AGENT_USD = 0.55
 SOURCE_LIMIT_CHARS = 10_000
 REPORT_LIMIT_CHARS = 6_500
 FILE_LIMIT_CHARS = 2_300
@@ -226,15 +226,26 @@ def run_one() -> None:
         )
         ledger = read_json(ROOT / "state/budget.json")
         already_spent = float(ledger.get("agents", {}).get(project, 0))
+        usage_log = ROOT / "state/usage.jsonl"
+        original_agent_spend = 0.0
+        if usage_log.is_file():
+            for line in usage_log.read_text(encoding="utf-8").splitlines():
+                try:
+                    record = json.loads(line)
+                    if record.get("agent") == project:
+                        original_agent_spend += float(record.get("cost_usd", 0))
+                except (TypeError, ValueError):
+                    continue
         review_job = dict(job)
         review_job["budget_usd"] = min(
             float(job["budget_usd"]),
-            round(already_spent + MAX_NEW_COST_PER_AGENT_USD, 5),
+            round(original_agent_spend + MAX_NEW_COST_PER_AGENT_USD, 5),
         )
         review_config = dict(configuration)
         review_config["per_request_max_tokens"] = min(
             int(review_config["per_request_max_tokens"]), 2100
         )
+        review_config["output_effort"] = "low"
         attempts = int(status.get("attempts", 0)) + 1
         write_json(status_path, {
             "project": project, "status": "REVIEW_IN_PROGRESS",
@@ -246,8 +257,8 @@ def run_one() -> None:
                 runner.get_key(), review_job, review_config,
                 instructions, [{"role": "user", "content": message}]
             )
-            if len(output.strip()) < 150:
-                raise ValueError("The reviewer returned no usable audit")
+            if len(output.strip()) < 150 or "Limitations" not in output:
+                raise ValueError("Model output is empty or truncated: no limitations section")
             REVIEWS.mkdir(parents=True, exist_ok=True)
             report_file = REVIEWS / (project + ".md")
             report_file.write_text(
