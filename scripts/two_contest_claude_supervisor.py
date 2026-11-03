@@ -171,7 +171,7 @@ def one_review() -> None:
             "budget_usd": MAX_LOCAL_USD_EACH,
         }
         config = runner.get_config()
-        config["per_request_max_tokens"] = 1100
+        config["per_request_max_tokens"] = 1600 if folder == "pdc" else 1100
         config["output_effort"] = "low"
         system = (
             "You are the independent evidence-review supervisor for exactly "
@@ -190,6 +190,13 @@ def one_review() -> None:
             "Evidence-based strengths, Next experiments, Release blockers, "
             "and Limitations. At most 400 words."
         )
+        if folder == "pdc":
+            system += (
+                " In this review do not design molecules or propose sequences. "
+                "Focus only on reproducibility, quantitative uncertainty, "
+                "confidence calibration, population selection effects and "
+                "independent test limitations of previously generated results."
+            )
         try:
             output, usage = runner.model_call(
                 runner.get_key(),
@@ -211,7 +218,19 @@ def one_review() -> None:
             print("REVIEW_ERROR", folder, type(error).__name__)
             return
         if len(output.strip()) < 180:
-            print("REVIEW_INCOMPLETE", folder)
+            save_status(state_path, {
+                "status": "REVIEW_INCOMPLETE",
+                "calls": status.get("calls", 0) + 1,
+                "last_reviewed": utc(),
+                "evidence_hash": current_hash,
+                "response_chars": len(output.strip()),
+                "output_tokens": usage.get("output_tokens"),
+                "estimated_cost_usd": usage.get("cost_usd"),
+                "model": usage.get("model"),
+                "preview": output.strip()[:300],
+            })
+            print("REVIEW_INCOMPLETE", folder, len(output.strip()),
+                  usage.get("output_tokens"), usage.get("cost_usd"))
             return
         number = status.get("calls", 0) + 1
         output_path = REVIEWS / (folder + "-review-" + str(number) + ".md")
