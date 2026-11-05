@@ -1,0 +1,146 @@
+{
+  "agents": {
+    "defaults": {
+      "subagents": {
+        "maxSpawnDepth": 3,
+        "maxChildrenPerAgent": 10,
+        "maxConcurrent": 10,
+        "runTimeoutSeconds": 3600
+      }
+    },
+    "entries": {
+      "boss": {
+        "name": "Competition Boss",
+        "workspace": "/srv/openclaw/competition-agents/boss",
+        "model": "anthropic/claude-fable-5-1",
+        "subagents": {
+          "allowAgents": [
+            "director"
+          ]
+        }
+      },
+      "director": {
+        "name": "Competition Director",
+        "workspace": "/srv/openclaw/competition-agents/director",
+        "model": "anthropic/claude-opus-5-5",
+        "subagents": {
+          "allowAgents": [
+            "research-lead",
+            "engineering-lead"
+          ]
+        }
+      },
+      "research-lead": {
+        "name": "Research Lead",
+        "workspace": "/srv/openclaw/competition-agents/research-lead",
+        "model": "anthropic/claude-sonnet-5-5",
+        "subagents": {
+          "allowAgents": [
+            "worker-01",
+            "worker-02",
+            "worker-03",
+            "worker-04",
+            "worker-05"
+          ]
+        }
+      },
+      "engineering-lead": {
+        "name": "Engineering Lead",
+        "workspace": "/srv/openclaw/competition-agents/engineering-lead",
+        "model": "anthropic/claude-sonnet-5-5",
+        "subagents": {
+          "allowAgents": [
+            "worker-06",
+            "worker-07",
+            "worker-08",
+            "worker-09",
+            "worker-10"
+          ]
+        }
+      },
+      "worker-01": {
+        "name": "Haiku Worker 01",
+        "workspace": "/srv/openclaw/competition-agents/worker-01",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-02": {
+        "name": "Haiku Worker 02",
+        "workspace": "/srv/openclaw/competition-agents/worker-02",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-03": {
+        "name": "Haiku Worker 03",
+        "workspace": "/srv/openclaw/competition-agents/worker-03",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-04": {
+        "name": "Haiku Worker 04",
+        "workspace": "/srv/openclaw/competition-agents/worker-04",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-05": {
+        "name": "Haiku Worker 05",
+        "workspace": "/srv/openclaw/competition-agents/worker-05",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-06": {
+        "name": "Haiku Worker 06",
+        "workspace": "/srv/openclaw/competition-agents/worker-06",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-07": {
+        "name": "Haiku Worker 07",
+        "workspace": "/srv/openclaw/competition-agents/worker-07",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-08": {
+        "name": "Haiku Worker 08",
+        "workspace": "/srv/openclaw/competition-agents/worker-08",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-09": {
+        "name": "Haiku Worker 09",
+        "workspace": "/srv/openclaw/competition-agents/worker-09",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      "worker-10": {
+        "name": "Haiku Worker 10",
+        "workspace": "/srv/openclaw/competition-agents/worker-10",
+        "model": "anthropic/claude-haiku-5-5",
+        "subagents": {
+          "allowAgents": []
+        }
+      }
+    }
+  },
+  "cron": {
+    "enabled": true
+  }
+}
