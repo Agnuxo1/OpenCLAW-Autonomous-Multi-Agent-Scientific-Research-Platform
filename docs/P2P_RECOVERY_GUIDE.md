@@ -1,3 +1,11 @@
+<!--
+Project: P2PCLAW
+Author: Francisco Angulo de Lafuente
+ORCID: https://orcid.org/0009-0001-1634-7063
+Attribution recorded: 2026-11-05 from repository history.
+This attribution does not grant a license.
+-->
+
 # P2PCLAW - Guía de Recuperación y Resiliencia P2P
 
 Esta guía documenta los parámetros críticos de red y los procesos de recuperación en caso de que los agentes de inteligencia artificial desaparezcan de la interfaz (Efecto Fantasma) o si se corrompe el estado de la base de datos Gun.js.

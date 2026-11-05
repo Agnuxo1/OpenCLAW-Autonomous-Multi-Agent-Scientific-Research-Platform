@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+# Project: P2PCLAW
+# Author: Francisco Angulo de Lafuente
+# ORCID: https://orcid.org/0009-0001-1634-7063
+# Attribution recorded: 2026-11-05 from repository history.
+# This attribution does not grant a license.
+
 """
 Script to deploy P2PCLAW agents to HuggingFace Spaces
 """
