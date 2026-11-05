@@ -1,0 +1,917 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "repository": "Agnuxo1/OpenCLAW-Autonomous-Multi-Agent-Scientific-Research-Platform",
+    "display_name": "P2PCLAW",
+    "orcid": "https://orcid.org/0009-0001-1634-7063",
+    "attribution_recorded": "2026-11-05"
+  },
+  "identity_basis": {
+    "user_confirmed_accounts": [
+      "Agnuxo",
+      "Agnuxo1"
+    ],
+    "method": "GitHub commit author history; no email values stored"
+  },
+  "attribution_method": {
+    "owner_history_only": "Author",
+    "mixed_history": "Contributor (non-exclusive)",
+    "limitations": "Git history supports repository attribution, not authorship of third-party content. No copyright ownership or license grant is inferred."
+  },
+  "branches": {
+    "main": {
+      "baseline_commit": "dc8215147c18f052ab7a771cc40d194814aac4fe",
+      "inline_paths": "shared_inline_paths",
+      "inline_path_count": 81,
+      "sidecar_only_paths": [
+        "auto-validator.yml",
+        "idx.yaml",
+        "monitoring/package.json",
+        "old_api.js",
+        "package.json",
+        "publish-mcp-registry.yml",
+        "railway.citizens.toml",
+        "railway.citizens10.toml",
+        "railway.citizens11.toml",
+        "railway.citizens3.toml",
+        "railway.citizens4.toml",
+        "railway.citizens5.toml",
+        "railway.citizens6.toml",
+        "railway.citizens7.toml",
+        "railway.citizens8.toml",
+        "railway.citizens9.toml",
+        "railway.json",
+        "railway.keeper.toml",
+        "render-citizens10.yaml",
+        "render-citizens11.yaml",
+        "render-citizens6.yaml",
+        "render-citizens7.yaml",
+        "render-citizens8.yaml",
+        "render-citizens9.yaml",
+        "render-keeper.yaml",
+        "render.yaml",
+        "vercel.json"
+      ],
+      "decision_counts": {
+        "inline_comment": 81,
+        "exclude": 27,
+        "readme_special": 1,
+        "sidecar_only": 27
+      }
+    },
+    "feature/hierarchical-competition-autopilot-20261102": {
+      "baseline_commit": "e4a79baccd28da9115b247099e7468ca7c48e717",
+      "inline_paths": "shared_inline_paths",
+      "inline_path_count": 81,
+      "deferred_feature_only_paths": [
+        {
+          "path": "deployment/README-COMPETITION-HIERARCHY.md",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "deployment/roles/boss.md",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "deployment/roles/director.md",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "deployment/roles/engineering-lead.md",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "deployment/roles/research-lead.md",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "deployment/roles/worker.md",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/competition_scout.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/competition_source_reviewer.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/competition_triage.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/competition_watchdog.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/dispatch_vcc2026_jev_gpu0.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/flagos_audit_dispatcher.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/flagos_cudagraph_audit.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/flagos_holdout_tuner.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/flagos_plugin_abba.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/flagos_t2_abba_dispatcher.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/flagos_t2_vllm_benchmark.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/pdc2026_24h_run.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/pdc2026_boltz_setup.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/pdc2026_cross_seed_replication.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/server_ia_status_export.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/two_contest_24h_deadline_watchdog.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/two_contest_24h_status.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/two_contest_claude_supervisor.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/vcc2026_24h_run.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "scripts/vcc2026_build_lowram_h1.py",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        },
+        {
+          "path": "skills/cognitiva-hierarchical-competitions/SKILL.md",
+          "history_class": "owner_login_only",
+          "reason": "feature-only contest/orchestration source or role document; unchanged while workflows may be active"
+        }
+      ],
+      "sidecar_only_paths": [
+        "auto-validator.yml",
+        "deployment/openclaw-hierarchy.overlay.json",
+        "idx.yaml",
+        "monitoring/package.json",
+        "old_api.js",
+        "package.json",
+        "publish-mcp-registry.yml",
+        "railway.citizens.toml",
+        "railway.citizens10.toml",
+        "railway.citizens11.toml",
+        "railway.citizens3.toml",
+        "railway.citizens4.toml",
+        "railway.citizens5.toml",
+        "railway.citizens6.toml",
+        "railway.citizens7.toml",
+        "railway.citizens8.toml",
+        "railway.citizens9.toml",
+        "railway.json",
+        "railway.keeper.toml",
+        "render-citizens10.yaml",
+        "render-citizens11.yaml",
+        "render-citizens6.yaml",
+        "render-citizens7.yaml",
+        "render-citizens8.yaml",
+        "render-citizens9.yaml",
+        "render-keeper.yaml",
+        "render.yaml",
+        "vercel.json"
+      ],
+      "decision_counts": {
+        "inline_comment": 81,
+        "exclude": 32,
+        "readme_special": 1,
+        "sidecar_only": 28,
+        "defer_live_workflow": 27
+      }
+    }
+  },
+  "shared_inline_paths": [
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "role": "author",
+      "history_class": "owner_login_only",
+      "baseline_git_blob": "b1ec73d2ad3d3d51f9cbd05d61a29d0173812a2c",
+      "baseline_sha256": "a3247221a308dffdac000d73e34751d4b8be3ff556dc1c6b300908624092354e",
+      "size_bytes": 719
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "role": "author",
+      "history_class": "owner_login_only",
+      "baseline_git_blob": "b811c1c999d35fe2efeef71144da86c474948ffe",
+      "baseline_sha256": "807c83d0de5837f11b5b1d496ee6a568ce97638330b70ec29f69f4223b8bd2d0",
+      "size_bytes": 715
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/research_proposal.md",
+      "role": "author",
+      "history_class": "owner_login_only",
+      "baseline_git_blob": "3e735e9d5653010da23a2e406087e5ffa89fbdbc",
+      "baseline_sha256": "042a37ff9bee6f1f95a59638d9b7aea4bdea4ff302080f66ad1de6c05d330f00",
+      "size_bytes": 639
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "role": "author",
+      "history_class": "owner_login_only",
+      "baseline_git_blob": "098d8b33dc27d9464195dcdd206922fc77425588",
+      "baseline_sha256": "a429037f0c287c05d116b00333310f5edb61e6b254c62fe761b7107e443c1110",
+      "size_bytes": 837
+    },
+    {
+      "path": "AESTHETICS_UPDATE_GUIDE.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "c51c3061e8540528d221589acee1105a95b8c66d",
+      "baseline_sha256": "a96d2848defd122112801b82561259b5fcde5bf507af50cb6ef590cc4cb74de9",
+      "size_bytes": 5518
+    },
+    {
+      "path": "AGENT_KEEPER_README.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "8bd975e1cf70b0cab1354cc1fd8633e7601be10d",
+      "baseline_sha256": "419f0a7f9c630e092cdb02a60d10c209b3449349aeddb57b86ee77158f97f9de",
+      "size_bytes": 5471
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "role": "author",
+      "history_class": "owner_login_only",
+      "baseline_git_blob": "df5d9b9f151b51dd6ec7b141fe638b185af1aca0",
+      "baseline_sha256": "a0cbb3d2cdde1b6b5892e9bff0b212853164a276347b4c90f43394ac3b582617",
+      "size_bytes": 1716
+    },
+    {
+      "path": "QUICKSTART.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "fa72664f97b06725f947d95b8701415596a052bf",
+      "baseline_sha256": "f69aa4e21cf7ebee3b5d5cf19187ee396f618661358309d20201942d3724887c",
+      "size_bytes": 16609
+    },
+    {
+      "path": "SECURITY.md",
+      "role": "author",
+      "history_class": "owner_login_only",
+      "baseline_git_blob": "035d3509839dae74057c22cc089c7ce3fd68b7fc",
+      "baseline_sha256": "3e09ff8956f8345e19ad7fc5dfd9fc791ab1bbf4dc48db7e4241490656b2239c",
+      "size_bytes": 864
+    },
+    {
+      "path": "WALKTHROUGH.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "1c3b8f6b3ebd664930721aa713204dff0688ec12",
+      "baseline_sha256": "690b5e32b8e68d2939d3ae0ac19a6c6acc6b56f8d9676cc7f874afc09f263baa",
+      "size_bytes": 5437
+    },
+    {
+      "path": "check_hive.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "9e4444e1ea4273f2c0eecebc841313d6967e3678",
+      "baseline_sha256": "a9a1829d00725eafa96be8e6f9c70ec59e2e4573fcecb3cf8aabcef66d9d6f16",
+      "size_bytes": 806
+    },
+    {
+      "path": "citizens-node-e.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "9af0508a92bca4c8c1b08fd9154de22345656966",
+      "baseline_sha256": "1c282f0a6bddc77c9007280b470196b179d378c23659aebb59ea084d30b37deb",
+      "size_bytes": 30551
+    },
+    {
+      "path": "citizens-node-f.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "7e97727b4d4eaa3103df51c9062d6f78a3570c71",
+      "baseline_sha256": "5a1a811174494d3d06e1200c6e3d4e124f122628001bf48ce94df7379006ef3a",
+      "size_bytes": 29387
+    },
+    {
+      "path": "citizens-node-g.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "26a9c907706499bdf0edbb33e5b51af32e7df0fe",
+      "baseline_sha256": "fc95e0128efd766942ab28a313b07b031d30c963b2f5b9e0c7891c5818593d15",
+      "size_bytes": 25805
+    },
+    {
+      "path": "citizens-node-h.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "8751386fe082adaf7c220ac15971e6e35346b754",
+      "baseline_sha256": "a19d55da5d4a41a7f7626cee1b8527a1b2831649d9114906cfa065a087b5b89c",
+      "size_bytes": 28375
+    },
+    {
+      "path": "deploy-app.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "61eb66f5f1299a49215cde909a47d0ae6d7ae9fb",
+      "baseline_sha256": "1c7ae649f3ee46dbebb1baaa3cb7af0e336e05fb595ea695ad096f114be40146",
+      "size_bytes": 4274
+    },
+    {
+      "path": "deploy-gateways.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "0f5816eed8c44b4e1508bbb27bc4e3a1ee7dfcee",
+      "baseline_sha256": "b4135412e606c826b3db90751be7f70c7ccfab2162bd3cf90bd323d20fad5edd",
+      "size_bytes": 4012
+    },
+    {
+      "path": "docs/AESTHETICS_UPDATE_GUIDE.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "c167129a07ad2856b8352d7e16aa8e7145e31467",
+      "baseline_sha256": "52cfd6a9968120e15c05913462344b28faac4f999e0041967ff583f752d9c5af",
+      "size_bytes": 2813
+    },
+    {
+      "path": "docs/DEPLOYMENT_GUIDE.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "9ee3358f6efd0b51b0fc539ec0295c1f8acaf3ae",
+      "baseline_sha256": "6b2da699e57cb41746df03219604502287b2679a9af529c7a31f9af5c83d4c17",
+      "size_bytes": 2303
+    },
+    {
+      "path": "docs/P2PCLAW_RESILIENCIA_GRATUITA.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "09d269f6669c131819e94c30f0e92f91a255bd99",
+      "baseline_sha256": "9a455a3b4a9ff90268595bd3db97e6375a51f6ae48333406eaaf3026369b17cf",
+      "size_bytes": 1531
+    },
+    {
+      "path": "docs/P2P_RECOVERY_GUIDE.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "5e639a46572756dc37a06de582c1b168893cbfd5",
+      "baseline_sha256": "fd36833a67104bd07016beed4f862545f9e4260cbc80c026420ed75ec24eefec",
+      "size_bytes": 3062
+    },
+    {
+      "path": "editor/scientific_editor.py",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "19b53e69229806bb537335ff344cb515513d1e8e",
+      "baseline_sha256": "8b2235636dc006eee7cdf9deaf2c52e135a220a5af05612cbb07ce1dfeeeb6a3",
+      "size_bytes": 38094
+    },
+    {
+      "path": "fix_agents.cjs",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "713b18d11d526a777f4daa49cd2ef99d9136709a",
+      "baseline_sha256": "cf0b22fbf3508cdd205ca253573075d05176c56b91e4a2853b4a4ab5748221a9",
+      "size_bytes": 2393
+    },
+    {
+      "path": "fix_agents.mjs",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "d15576cad862f4537f01ebc1a3fd151d10687cc3",
+      "baseline_sha256": "7f19954f070803474cfe93bde6bb45a5a3bfc2724f66da777906b65d890dd65a",
+      "size_bytes": 1829
+    },
+    {
+      "path": "fix_agents2.cjs",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "6cbcebe013eea432eb5c77abea62ba52ef684b67",
+      "baseline_sha256": "f04adc5623c386b4c7c3e9b7598aaf31936150db7aaeab8746254826800e704b",
+      "size_bytes": 2284
+    },
+    {
+      "path": "fix_web3.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "8dbacf7117ae1abbbc94c3bb07167a6f944c98a7",
+      "baseline_sha256": "909ab03fc8c9f2771bb6d4dd498301dce950a0858bde7c2c8a5b824655c07cfa",
+      "size_bytes": 1806
+    },
+    {
+      "path": "hf-spaces/citizens6/README.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "565aff7c8f117ad759169cb94a564da1d8162d95",
+      "baseline_sha256": "03059d542f1a9049c2308e6322b587ababf4eba058c0c8053f80443b6bfebfcf",
+      "size_bytes": 1195
+    },
+    {
+      "path": "hf-spaces/citizens7/README.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "2a503d4e9f4ea92d49fa7d33723e627db0500ec8",
+      "baseline_sha256": "cb78616fd72d3af2b84d56488ea4b629ec424f18462924e2e619b35412ce9486",
+      "size_bytes": 1206
+    },
+    {
+      "path": "hf-spaces/citizens8/README.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "a0d23b075b8cf1c07717e28ce345b80737ac61aa",
+      "baseline_sha256": "536591697250365cc1321f8ed1058e7393e81cef46417c8099bb9c09f077f168",
+      "size_bytes": 1202
+    },
+    {
+      "path": "hf-spaces/citizens9/README.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "8354e2d67ffbac6e50a836fa190014eab95468f3",
+      "baseline_sha256": "4273704c2528735ff43646e95bb23a47c44838a6bb08370721cf245f4c0fe6c6",
+      "size_bytes": 1209
+    },
+    {
+      "path": "hf-spaces/keeper-h/README.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "ae35a3bbd94a443a9304dd9b76a4482f08cf0fad",
+      "baseline_sha256": "bcde3bb70bf83eb5330a024c31e5768ff38c638dce36fb35541c78d987fc83e8",
+      "size_bytes": 2555
+    },
+    {
+      "path": "kaggle-nodes/kaggle_research_node_6.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "60645fdae93866edecdee249713b24ae46c87c27",
+      "baseline_sha256": "7c6b0801706193b883e0942166b9383e520426ddfa773845929ad665bbbc84e6",
+      "size_bytes": 15604
+    },
+    {
+      "path": "kaggle-nodes/kaggle_research_node_7.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "ab3b553d255d5c938b1aa994f71da05f4c5327a9",
+      "baseline_sha256": "7030d57641e7a4287ce989d73781db78ecc8fab45deffe30feda5eeabf8fa92e",
+      "size_bytes": 10792
+    },
+    {
+      "path": "kaggle-nodes/kaggle_research_node_8.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "81bd21a5b75af8c0d88d1239e66bc50e026441f2",
+      "baseline_sha256": "ca713ac3e7df58d03ee4c7a544e076139e199cb9f23ef1657203c65502c7fe99",
+      "size_bytes": 10100
+    },
+    {
+      "path": "kaggle-nodes/kaggle_research_node_9.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "84e4c7ee74326a9f99a8d783f66e6d1db84a9e7c",
+      "baseline_sha256": "2b9306bec22a3c1788c0d6c7729db4754c74d4e277b9462f42e5afd67674141f",
+      "size_bytes": 12276
+    },
+    {
+      "path": "listWeb3.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "482d91dc479f78352bf99f32e0cc1206b3c6cf96",
+      "baseline_sha256": "b40f6a9d707c7dcf0b237dc9ddf8044e77e6cfbf18cca54711faa134cd24fce4",
+      "size_bytes": 397
+    },
+    {
+      "path": "monitoring/README.md",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "00d64a9a38cf2e95c4d058bf688ae973966496c1",
+      "baseline_sha256": "251eed48de0c71df0d1f16ebd13eb017f52f3f1037e349a7681c7206e307fe83",
+      "size_bytes": 8556
+    },
+    {
+      "path": "monitoring/alerts.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "1593e3c8d90d1cc6bbf00e57df53df88b06ec220",
+      "baseline_sha256": "06c6f14e88555e1be4cb29880c4768ec99c6d0a0c253d5561ca61499f679f9a0",
+      "size_bytes": 8766
+    },
+    {
+      "path": "monitoring/auto-recovery.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "2c298a92d142c255a7b05fff43ee563ac18245e0",
+      "baseline_sha256": "39053bbf951f4d88ee7d14f3805c1e0953e04c5ee8ca666d4754d1c0f96e56bb",
+      "size_bytes": 10700
+    },
+    {
+      "path": "monitoring/cli-health-check.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "e5a23de441f6fe943b5c0dc044998d47419f9d0d",
+      "baseline_sha256": "7cd718752c0e75dc3f6f12319bb6a483b52810fc37aef3f775354880cbb95fed",
+      "size_bytes": 8235
+    },
+    {
+      "path": "monitoring/health-dashboard.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "4fb3fd4507cfa5917cb2e783240589f6a517d496",
+      "baseline_sha256": "187ae5d88bc5a10e3120a6ebd586639d3e372f0628356678e866217a1ae4648a",
+      "size_bytes": 8257
+    },
+    {
+      "path": "monitoring/index.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "96e675e01d45049be5cba614ccbc0653f8504744",
+      "baseline_sha256": "49c948ecb9eebd0f89e75e1b784d1d31fc8308fead841187d89d9bcf5afadc34",
+      "size_bytes": 17187
+    },
+    {
+      "path": "monitoring/logger.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "ac1c9e3f734d0316855f4897c1de2c0775bc11eb",
+      "baseline_sha256": "32d10bf70d66587f41456b7bfb70330b366d69aae6a8657533d1cda6a070d180",
+      "size_bytes": 6167
+    },
+    {
+      "path": "monitoring/metrics.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "cc5666867bbf7f67cecb5d38f3d7f6bb84aef67c",
+      "baseline_sha256": "1e0e611549963c627496f001fe46d7381cb86a99f70424085ac710ef0f9efa1d",
+      "size_bytes": 12066
+    },
+    {
+      "path": "node-server.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "83b96109e61b4b546014789a41cda3c449edb076",
+      "baseline_sha256": "c029c2fa7ffbbc0e77ea888145fb988353e0d8e27b52a016d01ba9ed281ea7ab",
+      "size_bytes": 30360
+    },
+    {
+      "path": "packages/agents/agent-keeper-full.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "02d88e0dc38ac7312016bb6acf8c9e532f26934d",
+      "baseline_sha256": "6ccddd91e1af3fe6f6fccf8bc0a19ee2f6a85eb3acd7348fa0f003b05b11c046",
+      "size_bytes": 11243
+    },
+    {
+      "path": "packages/agents/agent-keeper.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "acbfb5a34c75cc8301105ba1e2a427f1f96f24f2",
+      "baseline_sha256": "2358152723ec2d3b489f641087ca045dafe79735159ebb20ccb40e359bf0100a",
+      "size_bytes": 7632
+    },
+    {
+      "path": "packages/agents/citizens.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "1d8701eaead6e4daf95fd87aa58c346aa47a4d32",
+      "baseline_sha256": "d5c6584c895b4a48025836bde1e1d4637f7d60d55164897c76079b6fe51918a3",
+      "size_bytes": 110694
+    },
+    {
+      "path": "packages/agents/citizens10.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "8c2631a14e5b82e9135a890cb5eb35ed9a48297a",
+      "baseline_sha256": "92d61c2530c5525a29f77b7124f563fde648e0c6201daee10924d57612a6fcf2",
+      "size_bytes": 23659
+    },
+    {
+      "path": "packages/agents/citizens11.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "a5b4c3eb9b01885962c39cfbaef5dcd55307b03f",
+      "baseline_sha256": "9e617bf0be4348da01185dd094e3fd74e5f9d5d5460cdb34ecec69b5c9ec2cb5",
+      "size_bytes": 24760
+    },
+    {
+      "path": "packages/agents/citizens2.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "5b4ef082e7179c44abdcd36bab59ced404ad6c58",
+      "baseline_sha256": "ebf801956c4c31f4b6a561a9756bed2f42c946a549d3e6147f83ce6bdfcdcae4",
+      "size_bytes": 89672
+    },
+    {
+      "path": "packages/agents/citizens3.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "20638dbf8fe6b80ea97b9904fada94852cd6654c",
+      "baseline_sha256": "2ed89965ee642b807f56a3d3dae83c62aa888025f38fdc6ccef5dd16fdf5182c",
+      "size_bytes": 16289
+    },
+    {
+      "path": "packages/agents/citizens4.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "6e5e99889e284b8f7296e9013602862a9b516234",
+      "baseline_sha256": "1b8f0f65450f8625f1e0b45a214ddf2abd75a4dc8cbf77ae59f2af1ce74d4095",
+      "size_bytes": 12117
+    },
+    {
+      "path": "packages/agents/citizens5.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "7622624739c360d5d473def0bb787505267a5458",
+      "baseline_sha256": "5740a147b1675b89c33a6515818a29e8ac018e66241a08f57465fc1ca49aa0ea",
+      "size_bytes": 11705
+    },
+    {
+      "path": "packages/agents/citizens6.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "a3dfb143325f59168582672c0c3671f6cf9c3004",
+      "baseline_sha256": "07d948d43941d30f32211a857d494bb06a4928213ac4b2c18c550965e0ce9cef",
+      "size_bytes": 35999
+    },
+    {
+      "path": "packages/agents/citizens7.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "a381212be31a41222f4335b81c1e7023f663549a",
+      "baseline_sha256": "1a0634775b8afe06411176e2366eeb0b3dc111dcefd3fb6dbc72a9ed47f99fe6",
+      "size_bytes": 27315
+    },
+    {
+      "path": "packages/agents/citizens8.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "835225910ac9a2e8403dce71e7350381a9901012",
+      "baseline_sha256": "1ff366fe34a8a825d3720224c873d32cd1121e9c84fef9c4e2b0963bd277a3f2",
+      "size_bytes": 25789
+    },
+    {
+      "path": "packages/agents/citizens9.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "278f0158077d45e890df5b4ba525a75191d57685",
+      "baseline_sha256": "1423994440a6a67b1f8af8bf6cae384fabdee2a39aa7dfcfa28e554b5e6681f7",
+      "size_bytes": 20353
+    },
+    {
+      "path": "packages/agents/llm-writer.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "f460add212251a970b410c3440bab4c6a21560c1",
+      "baseline_sha256": "aedc6a64ec5554e93260ff1f36642740447cfab3eed75464f7a7b6e7d8c0003e",
+      "size_bytes": 10735
+    },
+    {
+      "path": "packages/api/src/config/gun.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "dc2c1e6766c169440e49af55d036f61bb005dd1e",
+      "baseline_sha256": "9749dd0714374b17a36b2e8af0ff5a75797592f1a6fbafae19f4cf8330c2ea8f",
+      "size_bytes": 580
+    },
+    {
+      "path": "packages/api/src/config/peers.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "bc0b5c30c73d86698432d53794b5f9227b0c683e",
+      "baseline_sha256": "7b391aee13ed43fa4387e74598594eaf490b4d41d19f0e353db52ca9bdb9033a",
+      "size_bytes": 1163
+    },
+    {
+      "path": "packages/api/src/config/server.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "55cdc32f1633cf0e0444b209f4f5b701e24b4b79",
+      "baseline_sha256": "983ab8a9a51bc3bc910b87b19a1a4aa96a4a803b93008908fab628149f45dc08",
+      "size_bytes": 3272
+    },
+    {
+      "path": "packages/api/src/index.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "4dd1fd87318df20346dfa4c4fab437e2070250eb",
+      "baseline_sha256": "7c3a92513583b034bf776d208fd891b662902c463c1eced689ea1430b4c5bcaf",
+      "size_bytes": 99238
+    },
+    {
+      "path": "packages/api/src/middleware/auth.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "0035048e52cb1879fa81b25457c7284efb921bb9",
+      "baseline_sha256": "3b2d4e463a7f78611feb8f894022ce5496e2fc1b199bf6edf1801d07a567ac07",
+      "size_bytes": 1487
+    },
+    {
+      "path": "packages/api/src/services/abraxasService.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "3aec8a417ed20a1682ef8ea55b65c2ed3d7eff03",
+      "baseline_sha256": "c1681ff0a6cbdc1487bf62884fe890e2b70f9abf87251689c9484dc8fd07e853",
+      "size_bytes": 10984
+    },
+    {
+      "path": "packages/api/src/services/agentService.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "81c61fad6142912e665b354ec20e9886fbe7b9eb",
+      "baseline_sha256": "80ba2857c39cea417686677eac2ed755df4de067d93602146d8229db9b055d96",
+      "size_bytes": 2989
+    },
+    {
+      "path": "packages/api/src/services/cloudflareService.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "52430da9c7f8f5bb21004b3a19b3bcf1a4fe3363",
+      "baseline_sha256": "75aadec9806ab86834f5c2e5039f359d10cd734361e0689c6f901d40f2e00b4c",
+      "size_bytes": 4390
+    },
+    {
+      "path": "packages/app/agents.html",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "f8aadef957389cf3af42b609eda1571109679b67",
+      "baseline_sha256": "2a3126c789687c68151abc5b69a886f0083a89a7a5dc609bf841bc5bd092ee69",
+      "size_bytes": 10248
+    },
+    {
+      "path": "packages/app/index.html",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "456bfbd6d8819a161a20cadf17be847959d5b91d",
+      "baseline_sha256": "f28100b07a350cbc306d3f6ab7d2d1c4b46ddc40e10569ffd7257f6daa63febb",
+      "size_bytes": 208941
+    },
+    {
+      "path": "packages/sdk-python/p2pclaw/__init__.py",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "af898f6d8fc083830270e084db65e99209780ae6",
+      "baseline_sha256": "3064bd00706f72a1fb56594eba5aa3c880d3e51002ccf708833dc1754e050622",
+      "size_bytes": 3470
+    },
+    {
+      "path": "packages/sdk-python/p2pclaw/veselov_sparse.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "cd4b6d1cf6f938c6a2e10a915281a7c9671645bf",
+      "baseline_sha256": "9069a9933cdcd42fb94bb2e3ad03fe3306628b6ce07a9bb58c9620a993cd223c",
+      "size_bytes": 2424
+    },
+    {
+      "path": "rebuild_web3.cjs",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "b8af01204bcf756410e9b93db3265f8df95fc92b",
+      "baseline_sha256": "263a3f4f8496e53321c6ffdc9c221a847852bcb31b2b8a3be0018549e38c9b8c",
+      "size_bytes": 2421
+    },
+    {
+      "path": "recover_gateways.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "e44e6d143daecde9544fde8bee2b19f851fa2c82",
+      "baseline_sha256": "5d873b3b39553e1dc4792661c0af928173ae157aa740170dd53f06cf54b0ff32",
+      "size_bytes": 2417
+    },
+    {
+      "path": "scripts/abraxas_agent_loop.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "6b028e4c8be01ce6888b66e71c8efa5f9099d8ca",
+      "baseline_sha256": "f224c15336782a116099bd86e44f9e7677d2fedcf9ec0adb4b21a018d6ff4518",
+      "size_bytes": 11268
+    },
+    {
+      "path": "scripts/check-agent-count.js",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "7d448bcc5fc79068fad4a0145e198ffb478f8eea",
+      "baseline_sha256": "3cc31172cb6ebd050c396e12898ec65fb5e53b9c73c76ae640e92a475c92b73b",
+      "size_bytes": 1345
+    },
+    {
+      "path": "scripts/deploy-hf-spaces.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "a8943be30e37b357e913c73478cb38d0a664ec70",
+      "baseline_sha256": "e2b7fa9c640e6a68bc1c311a626d7b358df23346c285713eb221050dc450551f",
+      "size_bytes": 4681
+    },
+    {
+      "path": "scripts/deploy-keeper-hf.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "d4ae6beb9f9a362a0c38dd570604b28595f52740",
+      "baseline_sha256": "e98e791725697367d103eee473bed3373c381c245c0c70c884240e7423637628",
+      "size_bytes": 3976
+    },
+    {
+      "path": "scripts/deploy-keepers-agnuxo.py",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "dbec8c6297a8388cf01f0072f8f1d6eb7afecb67",
+      "baseline_sha256": "bd7dda7467c380bec3611fcb92f0eae5d18d9fdc80718925b5b7688716954b87",
+      "size_bytes": 8782
+    },
+    {
+      "path": "scripts/deploy-railway.ps1",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "ced503935c8d936e434fe1900b21c1be60e6b531",
+      "baseline_sha256": "6aed3d2a7fae578c7bb958083b69442f4f1c5922547d20e3f71efcce70d2c0df",
+      "size_bytes": 958
+    },
+    {
+      "path": "scripts/deploy-railway.sh",
+      "role": "author",
+      "history_class": "owner_identity_fallback_only",
+      "baseline_git_blob": "b3e9ae5c5b1c0666024c049d1a8b2e6841c4d7eb",
+      "baseline_sha256": "046d237ca23868df9b5bddbd79f2c368e02c4d0c2a344f4f2fe1663968afc40f",
+      "size_bytes": 790
+    },
+    {
+      "path": "scripts/seed-mempool.js",
+      "role": "contributor",
+      "history_class": "mixed_owner_contribution",
+      "baseline_git_blob": "fa0b124ddd1fcc49e6df8f989d6c9b9f10752dc0",
+      "baseline_sha256": "85182af3d18cf02e59b8219158dffd17562bc1fe3cf1b6598b45c89eace99575",
+      "size_bytes": 3229
+    }
+  ],
+  "license_scope": {
+    "status": "unresolved",
+    "root_license_file": false,
+    "root_package_declares": "ISC",
+    "readme_previously_claimed": "MIT; corrected to unresolved",
+    "feature_policy_states": "MIT",
+    "existing_feature_file_level_notice": "preserved",
+    "new_spdx_identifiers": 0,
+    "license_grant": false,
+    "baseline_manifest_sha256": "2e1711233907c4f3273776176f4cdec6a3fda6c68a9aa0a4a91f1f72541a1f25"
+  },
+  "baseline": {
+    "file": "provenance-baseline.json",
+    "record_count": 589,
+    "distinctive_excerpt_count": 4,
+    "branches": {
+      "main": "dc8215147c18f052ab7a771cc40d194814aac4fe",
+      "feature/hierarchical-competition-autopilot-20261102": "e4a79baccd28da9115b247099e7468ca7c48e717"
+    }
+  },
+  "excluded_scope_summary": {
+    "content_not_changed": "tests, secrets/verification, deployment state, backups, reports, datasets, generated assets, third-party notices, and mixed paths without verified owner history",
+    "excluded_path_content_not_included": true
+  },
+  "signature_type": "Attribution/provenance metadata only; no cryptographic signature claim."
+}

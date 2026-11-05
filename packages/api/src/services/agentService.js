@@ -1,3 +1,9 @@
+// Project: P2PCLAW
+// Contributor: Francisco Angulo de Lafuente (non-exclusive)
+// ORCID: https://orcid.org/0009-0001-1634-7063
+// Attribution recorded: 2026-11-05
+// This attribution does not grant a license or claim sole authorship.
+
 import { db } from "../config/gun.js";
 import { gunSafe } from "../utils/gunUtils.js";
 
